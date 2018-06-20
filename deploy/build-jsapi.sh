@@ -11,8 +11,7 @@ HAS_CI=$3 # unset or the specific CI env var saying "it's running in CI"
 # 'fromci' is run before xcodebuild and does everything: npm install and build JS API
 # 'xcode' is run as build step and depends on whether is being run from CI or not
 # - from CI (HAS_CI is set) - does nothing because all was done in 'fromci'
-# - from desktop (HAS_CI is undef) - just builds JS API to speed up. npm install is expected to
-# be run manually beforehand (and the script warns if it wasn't)
+# - from desktop (HAS_CI is undef) - just builds JS API to speed up.
 
 CORE_ROOT=$(dirname $0)/$CORE_ROOT_RELATIVE
 pushd $CORE_ROOT
@@ -33,6 +32,11 @@ esac
 if [ -z "$DO_BUILD" ]; then
  echo "XCode step in CI, skipping JS API build"
  exit 0
+fi
+
+if [ ! -d "node_modules/" ]; then
+  echo "'node_modules' directory not found. You must run 'npm install' in the adblockbrowserios-core root directory before running this script again."
+  exit 1
 fi
 
 # Build js API
