@@ -147,10 +147,10 @@ static NSString *const DB_NAME = @"BrowserState.sqlite";
                                                                   @"newValues" : newValues
                                                               };
                                                               NSString *className = NSStringFromClass(managedObj.class);
-                                                              if (_lastUnsavedMutations[className] == nil) {
-                                                                  _lastUnsavedMutations[className] = [NSMutableArray arrayWithObject:mutations];
+                                                              if (self->_lastUnsavedMutations[className] == nil) {
+                                                                  self->_lastUnsavedMutations[className] = [NSMutableArray arrayWithObject:mutations];
                                                               } else {
-                                                                  [_lastUnsavedMutations[className] addObject:mutations];
+                                                                  [self->_lastUnsavedMutations[className] addObject:mutations];
                                                               }
                                                           }
                                                       }
@@ -159,9 +159,9 @@ static NSString *const DB_NAME = @"BrowserState.sqlite";
                                                       object:nil
                                                        queue:[NSOperationQueue currentQueue]
                                                   usingBlock:^(NSNotification *note) {
-                                                      NSDictionary *currentMutations = [NSDictionary dictionaryWithDictionary:_lastUnsavedMutations];
-                                                      [_lastUnsavedMutations removeAllObjects];
-                                                      for (id<CoreDataMutationDelegate> delegate in _mutationDelegates) {
+                                                      NSDictionary *currentMutations = [NSDictionary dictionaryWithDictionary:self->_lastUnsavedMutations];
+                                                      [self->_lastUnsavedMutations removeAllObjects];
+                                                      for (id<CoreDataMutationDelegate> delegate in self->_mutationDelegates) {
                                                           if (delegate == nil) {
                                                               continue;
                                                           }

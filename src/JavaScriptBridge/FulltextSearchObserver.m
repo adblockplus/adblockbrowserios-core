@@ -123,20 +123,20 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
                                     phrase:userInfo[@"phrase"]
                                 completion:^(NSError *error, FulltextSearchResults *result) {
                                     // give main thread a chance to update uiwebview DOM changes
-                                    _currentIndex = 0;
-                                    _totalMatches = 0;
+                                    self->_currentIndex = 0;
+                                    self->_totalMatches = 0;
                                     if (error) {
                                         LogError(@"Fulltext search JS execution failed");
                                     } else if (!(result.locations.count > 0)) {
                                         LogInfo(@"No match");
                                     } else {
-                                        if (_currentTab.webView) {
-                                            CGPoint zoom = [self viewportZoomFromJSViewport:result.viewport inWebView:_currentTab.webView];
+                                        if (self->_currentTab.webView) {
+                                            CGPoint zoom = [self viewportZoomFromJSViewport:result.viewport inWebView:self->_currentTab.webView];
                                             // make the first focus with zero insets. When it is nonzero, the initial match selection
                                             // may skip some matches at the very beginning of the page (above the focus)
-                                            CGRect focusFrame = [self focusFrameInWebView:_currentTab.webView withInsets:UIEdgeInsetsZero];
+                                            CGRect focusFrame = [self focusFrameInWebView:self->_currentTab.webView withInsets:UIEdgeInsetsZero];
                                             NSArray *locations = result.locations;
-                                            _totalMatches = [locations count];
+                                            self->_totalMatches = [locations count];
                                             // find the closest point
                                             __block CGFloat smallestDistance = CGFLOAT_MAX;
                                             // Iterate tuples to find the one closest to current scrolling offset
@@ -150,10 +150,10 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
                                                 CGFloat distance = sqrtf(delta.x * delta.x + delta.y * delta.y);
                                                 if (distance < smallestDistance) {
                                                     smallestDistance = distance;
-                                                    _currentIndex = idx;
+                                                    self->_currentIndex = idx;
                                                 }
                                             }];
-                                            [self selectMatchWithIndex:_currentIndex
+                                            [self selectMatchWithIndex:self->_currentIndex
                                                              doneBlock:^(BOOL success) {
                                                                  if (!success) {
                                                                      // keep iterating until valid match is found
@@ -176,7 +176,7 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
     [self selectMatchWithIndex:prev
                      doneBlock:^(BOOL success) {
                          if (!success) {
-                             _currentIndex = prev;
+                             self->_currentIndex = prev;
                              // keep iterating until valid match is found
                              [self onSelectPrevious:notification];
                          }
@@ -193,7 +193,7 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
     [self selectMatchWithIndex:next
                      doneBlock:^(BOOL success) {
                          if (!success) {
-                             _currentIndex = next;
+                             self->_currentIndex = next;
                              // keep iterating until valid match is found
                              [self onSelectNext:notification];
                          }
@@ -218,9 +218,9 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
                                     if (error || !result) {
                                         LogInfo(@"Cannot select match %lu, skipping", newIndex + 1); // displayed indexes are from 1 not 0
                                     } else {
-                                        _currentIndex = newIndex; // reassign only on success
-                                        CGPoint zoom = [self viewportZoomFromJSViewport:result.viewport inWebView:_currentTab.webView];
-                                        CGRect focusFrame = [self focusFrameInWebView:_currentTab.webView withInsets:_matchFocusScrollViewInsets];
+                                        self->_currentIndex = newIndex; // reassign only on success
+                                        CGPoint zoom = [self viewportZoomFromJSViewport:result.viewport inWebView:self->_currentTab.webView];
+                                        CGRect focusFrame = [self focusFrameInWebView:self->_currentTab.webView withInsets:self->_matchFocusScrollViewInsets];
                                         NSArray *locations = result.locations; // array of coords (arrays of 2)
                                         if ([locations count] == 0) {
                                             LogError(@"Fulltext search match did not return any coordinate");

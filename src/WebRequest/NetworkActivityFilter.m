@@ -50,22 +50,22 @@
         NSDate *now = [NSDate date];
         // if this is the first call, preset the diff at threshold interval
         // to trigger the event
-        NSTimeInterval diffSince = _lastHandlerCallStamp ? [now timeIntervalSinceDate:_lastHandlerCallStamp] : _FILTER_INTERVAL;
+        NSTimeInterval diffSince = self->_lastHandlerCallStamp ? [now timeIntervalSinceDate:self->_lastHandlerCallStamp] : self->_FILTER_INTERVAL;
         if (state) {
             // exchange only if called with valid state, as opposite to nil (see below)
-            _lastStateTransition = state;
+            self->_lastStateTransition = state;
         }
         // ease out fast transitions
-        if (diffSince >= _FILTER_INTERVAL) {
+        if (diffSince >= self->_FILTER_INTERVAL) {
             // last transition is running for at least the timeout
             // post the current state
-            _lastHandlerCallStamp = now;
-            _eventHandler(_lastStateTransition);
+            self->_lastHandlerCallStamp = now;
+            self->_eventHandler(self->_lastStateTransition);
         } else if (state) {
             // Called with valid state but too early after the last transition,
             // requeue with nil parameter as a reminder to try again with what
             // will be the last transition state at that moment
-            NSTimeInterval diffLeft = _FILTER_INTERVAL - diffSince;
+            NSTimeInterval diffLeft = self->_FILTER_INTERVAL - diffSince;
             [self performSelector:_cmd withObject:nil afterDelay:diffLeft];
         }
     });

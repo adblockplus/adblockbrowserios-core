@@ -108,7 +108,7 @@
     [_providers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         AbstractSuggestionProvider *provider = obj;
         if (provider.enabled) {
-            [_runningProviders addObject:provider];
+            [self->_runningProviders addObject:provider];
             [provider startAsyncFindingForQuery:query];
         }
     }];
@@ -147,7 +147,7 @@
     }
     // send the sorted array to view
     dispatch_async(dispatch_get_main_queue(), ^{
-        _resultBlock(_results);
+        self->_resultBlock(self->_results);
     });
 }
 

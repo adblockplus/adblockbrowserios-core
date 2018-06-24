@@ -156,7 +156,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
 {
     if (isMainFrame) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.historyManager onTabId:_identifier didStartLoading:url];
+            [self.historyManager onTabId:self->_identifier didStartLoading:url];
         });
     }
 }
@@ -166,7 +166,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
 {
     if ([redirResponse.URL isEqual:newRequest.mainDocumentURL]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.historyManager onTabId:_identifier cancelledLoading:redirResponse.URL];
+            [self.historyManager onTabId:self->_identifier cancelledLoading:redirResponse.URL];
         });
     }
 }
@@ -175,7 +175,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
 {
     if ([request.URL isEqual:request.mainDocumentURL]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.historyManager onTabId:_identifier cancelledLoading:request.URL];
+            [self.historyManager onTabId:self->_identifier cancelledLoading:request.URL];
         });
     }
 }
@@ -244,7 +244,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
                                                                                                          delegate:nil];
                                                                    [alert show];
                                                                } else {
-                                                                   [_extensionViewPresenter showExtensionView];
+                                                                   [self->_extensionViewPresenter showExtensionView];
                                                                }
                                                            }];
             return NO;

@@ -160,18 +160,18 @@ static NSDictionary *_regexCache;
     _debugMatcherDescriptions = [NSMutableArray arrayWithCapacity:[configObject count]];
     [configObject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
       if([_ignoredMatchersForEvent[@(eventType)] containsObject:key]) {
-        [_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ ignored", key]];
+        [self->_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ ignored", key]];
         return;
       }
       StaticMatcherBlock block = _staticMatcherBlocks[key];
       if(block) {
-        [_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ ok", key]];
-        [_matcherBlocks addObject:^BOOL(NSURL *url) {
+        [self->_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ ok", key]];
+        [self->_matcherBlocks addObject:^BOOL(NSURL *url) {
           // parameterize StaticMatcherBlock
           return block(url, obj);
         }];
       } else {
-        [_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ undefined", key]];
+        [self->_debugMatcherDescriptions addObject:[NSString stringWithFormat:@"%@ undefined", key]];
       }
     }];
   }
