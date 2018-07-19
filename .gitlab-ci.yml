@@ -12,4 +12,4 @@ build_code:
     - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.3.1'
     - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone 6s Plus,OS=9.3'
   tags:
-    - ios, abp
+    - ios, abbcore
