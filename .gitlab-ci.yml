@@ -6,6 +6,7 @@ stages:
 build_code:
   stage: test
   before_script:
+    - npm install -g jq
     - npm install
   script:
     - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone X,OS=11.3'
