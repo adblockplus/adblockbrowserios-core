@@ -10,7 +10,6 @@ cache:
 build_code:
   stage: test
   before_script:
-    - npm install -g jq
     - npm install
     - carthage update --platform ios --no-use-binaries --cache-builds
   script:
