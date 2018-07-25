@@ -142,7 +142,7 @@ final class KittCoreExtensionTests: XCTestCase {
             browserWithExtension?.backgroundWebView.evaluateJavaScript(javascriptCommand)
         }
 
-        waitForExpectations(timeout: 25) { error in
+        waitForExpectations(timeout: 5) { error in
             if error != nil {
                 print("Time limit exceeded for \(testNameInJavascript)")
             }
@@ -158,7 +158,7 @@ final class KittCoreExtensionTests: XCTestCase {
             backgroundScriptLoadedExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 25) { error in
+        waitForExpectations(timeout: 5) { error in
             if error != nil {
                 print("Background script not ready")
             }
