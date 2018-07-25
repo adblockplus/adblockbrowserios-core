@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29ABBB0021072D5A002823FB /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29ABBAFF21072D5A002823FB /* CocoaLumberjackSwift.framework */; };
 		69006ECE1CEB132E00ECF05E /* ProviderFindInPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006ECD1CEB132E00ECF05E /* ProviderFindInPage.swift */; };
 		69006EDE1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006EDD1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift */; };
 		69006EE01CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006EDF1CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift */; };
@@ -296,6 +297,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29ABBAFF21072D5A002823FB /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/iOS/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
 		69006ECD1CEB132E00ECF05E /* ProviderFindInPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderFindInPage.swift; sourceTree = "<group>"; };
 		69006EDD1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventDispatcher+WebNavigation.swift"; sourceTree = "<group>"; };
 		69006EDF1CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventDispatcher+ContextMenu.swift"; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 			files = (
 				693118B61B273E23003D0836 /* WebKit.framework in Frameworks */,
 				E9CD44981B25E787005662E0 /* libz.dylib in Frameworks */,
+				29ABBB0021072D5A002823FB /* CocoaLumberjackSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -876,6 +879,7 @@
 		E9C062791B3B4E1C0041F6D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29ABBAFF21072D5A002823FB /* CocoaLumberjackSwift.framework */,
 				E92575721DEEDC9A00B93166 /* CocoaLumberjack.framework */,
 				E92575701DEEDC3400B93166 /* CocoaLumberjackSwift.framework */,
 				69259CAC1DC8996F0033A327 /* Regex.framework */,
@@ -1405,6 +1409,7 @@
 				E9EC6FFF1B25D79800C4C905 /* Headers */,
 				E9EC70001B25D79800C4C905 /* Resources */,
 				E95A61201C4D39CA00433F91 /* Patch Info.plist */,
+				29ABBB0121072E42002823FB /* Carthage copy frameworks */,
 				E537DA2C200CD4B3003DE146 /* Run SwiftLint */,
 			);
 			buildRules = (
@@ -1571,6 +1576,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		29ABBB0121072E42002823FB /* Carthage copy frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaLumberjack.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaLumberjackSwift.framework",
+			);
+			name = "Carthage copy frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			showEnvVarsInLog = 0;
+		};
 		E537DA2C200CD4B3003DE146 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1968,7 +1990,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-Framework.plist";
 				INFOPLIST_OUTPUT_FORMAT = binary;
@@ -2155,7 +2180,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-Framework.plist";
 				INFOPLIST_OUTPUT_FORMAT = binary;
@@ -2184,7 +2212,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-Framework.plist";
 				INFOPLIST_OUTPUT_FORMAT = binary;
