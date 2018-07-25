@@ -14,7 +14,5 @@ build_code:
     - carthage update --platform ios --no-use-binaries --cache-builds
   script:
     - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone X,OS=11.3'
-    - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone SE,OS=10.3.1'
-    - set -o pipefail && xcodebuild -verbose clean test -project KittCore.xcodeproj -scheme KittCore -destination 'platform=iOS Simulator,name=iPhone 6s Plus,OS=9.3'
   tags:
     - ios, abbcore
