@@ -100,7 +100,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     }
 
     open override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              dataTypeIdentifierForActivityType activityType: UIActivityType?) -> String {
+                                              dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
         // the data type is preferably taken programmatically from the created extension item, in case
         // the extension internal constants get changed. But as we can't distinguish which particular
         // item provider and registered type is the right one, it can be used only if there is only
@@ -116,7 +116,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     }
 
     open override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              subjectForActivityType activityType: UIActivityType?) -> String {
+                                              subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         if PasswordMgrItemProvider.isPasswordMgrActivityType(activityType.map { $0.rawValue }) {
             return ""
         } else {
