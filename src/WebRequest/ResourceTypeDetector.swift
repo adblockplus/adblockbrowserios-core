@@ -103,7 +103,7 @@ open class ResourceTypeDetector: NSObject {
                               fileSuffixes: [".mpe", ".mpg", ".mpeg", ".avi", ".mp4", ".m4v", ".mov"])
     ]
 
-    open static func detectTypeFromURL(_ url: URL, allowExtended allowExt: Bool) -> WebRequestResourceType? {
+    public static func detectTypeFromURL(_ url: URL, allowExtended allowExt: Bool) -> WebRequestResourceType? {
         /// Simple NSURL.path will knee-jerk on any slightly irregular character
         /// and cut off the real suffix. Example:
         /// http://m.novinky.cz/i/03000L1w2g1b00XuTJ$10$2r479;514799-top_$0J2-z94m2$1Y.jpg
@@ -135,7 +135,7 @@ open class ResourceTypeDetector: NSObject {
     ///
     /// - Returns: a valid NSNumber with WebRequestResourceType enum value or nil if type was not detected/
     @objc
-    open static func objc_detectTypeFromURL(_ url: URL, allowExtended allowExt: Bool) -> NSNumber? {
+    public static func objc_detectTypeFromURL(_ url: URL, allowExtended allowExt: Bool) -> NSNumber? {
         if let resourceType = detectTypeFromURL(url, allowExtended: allowExt) {
             return NSNumber(value: resourceType.rawValue as Int)
         }
@@ -179,7 +179,7 @@ open class ResourceTypeDetector: NSObject {
         return nil
     }
 
-    open static func detectTypeFromRequest(_ request: URLRequest, allowExtended allowExt: Bool) -> WebRequestResourceType? {
+    public static func detectTypeFromRequest(_ request: URLRequest, allowExtended allowExt: Bool) -> WebRequestResourceType? {
         guard let url = request.url else {
             return WebRequestResourceType.other
         }
@@ -260,7 +260,7 @@ open class ResourceTypeDetector: NSObject {
         return detectResourceTypeWithJavascript(context, url: url, modifier: "^")
     }
 
-    open static func queryFrameContext(_ context: JSContext?,
+    public static func queryFrameContext(_ context: JSContext?,
                                        webThread: Thread?,
                                        url: URL,
                                        operationQueue: OperationQueue,
@@ -294,7 +294,7 @@ open class ResourceTypeDetector: NSObject {
         }
     }
 
-    open static func queryDOMNodeWithSource(
+    public static func queryDOMNodeWithSource(
         _ url: String,
         webView: WebViewProtocolDelegate,
         callback: @escaping (_ resourceType: WebRequestResourceType?, _ originFrame: WebKitFrame?) -> Void) {

@@ -62,19 +62,19 @@ public final class ContentWebView: SAContentWebView {
 
     // MARK: - UIWebView
 
-    open override func loadRequest(_ request: URLRequest) {
+    public override func loadRequest(_ request: URLRequest) {
         var request = request
         request.originalURL = request.url
         super.loadRequest(request)
     }
 
-    open override func goBack() {
+    public override func goBack() {
         super.goBack()
         historyManager?.onTabIdDidGoBack(identifier)
         navigationHistoryDidChange()
     }
 
-    open override func goForward() {
+    public override func goForward() {
         super.goForward()
         historyManager?.onTabIdDidGoForward(identifier)
         navigationHistoryDidChange()

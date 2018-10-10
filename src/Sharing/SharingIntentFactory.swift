@@ -98,7 +98,7 @@ open class SharingIntentFactory {
     }
 
     /// Controller factory with completion activity matching
-    open static func makeController(
+    public static func makeController(
         _ factory: SharingIntentFactory,
         activityItems: [AnyObject],
         excludedActivities: [UIActivityType]?,

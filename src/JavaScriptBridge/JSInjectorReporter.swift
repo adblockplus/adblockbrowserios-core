@@ -64,7 +64,7 @@ extension JSInjectorReporter {
         let callbackId = javaScriptCallback.callbackId
 
         let properties: [String: Any] = [
-            "context": "callback \(Utils.callbackOriginDescription(origin))",
+            "context": "callback \(String(describing: Utils.callbackOriginDescription(origin)))",
             "extension": extensionId as Any,
             "parameters": object,
             "url": webView.url?.absoluteString as Any
@@ -122,7 +122,7 @@ extension JSInjectorReporter {
         let object = createObject(from: javaScriptCallback, with: payload)
         let origin = javaScriptCallback.origin
         let properties: [String: Any] = [
-            "context": "callback \(Utils.callbackOriginDescription(origin))",
+            "context": "callback \(String(describing: Utils.callbackOriginDescription(origin)))",
             "extension": javaScriptCallback.extension?.extensionId as Any,
             "parameters": object,
             "url": webView.url?.absoluteString as Any

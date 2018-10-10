@@ -26,9 +26,9 @@ open class OmniboxSuggestion: NSObject {
         super.init()
     }
 
-    open let phrase: String
+    public let phrase: String
     /// readonly suggestion rank
-    open let rank: Int
+    public let rank: Int
     /// read/write suggestion provider id
     open var providerId: UInt = 0
 

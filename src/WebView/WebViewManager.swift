@@ -32,7 +32,7 @@ public final class WebViewManager: NSObject {
     }
 
     public var webViews: AnySequence<SAWebView> {
-        return AnySequence(weakWebViews.lazy.flatMap { $0.reference })
+        return AnySequence(weakWebViews.lazy.compactMap { $0.reference })
     }
 
     @objc public static let sharedInstance = WebViewManager()

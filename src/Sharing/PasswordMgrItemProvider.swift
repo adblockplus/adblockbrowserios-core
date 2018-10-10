@@ -56,7 +56,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     fileprivate var extensionItem: NSExtensionItem?
     fileprivate static let extensionInstance = OnePasswordExtension.shared()
 
-    open static func isPasswordMgrAvailable() -> Bool {
+    public static func isPasswordMgrAvailable() -> Bool {
         return extensionInstance.isAppExtensionAvailable()
     }
 
@@ -71,7 +71,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     }
 
     // Factory pattern to encapsulate the asynchronous design of OnePassword extension item creation
-    open static func create( _ forWebView: UIWebView,
+    public static func create( _ forWebView: UIWebView,
                              defaultProvider: UIActivityItemProvider,
                              completionHandler:@escaping (PasswordMgrItemProvider?, Error?) -> Void ) {
         let instance = PasswordMgrItemProvider(webView: forWebView, defaultProvider: defaultProvider)

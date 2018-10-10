@@ -204,7 +204,7 @@ private let faviconDefaultPath = "/favicon.ico"
 private let faviconAppleTouch = "apple-touch-icon"
 
 open class FaviconGroup: NSObject {
-    @objc open let request: URLRequest
+    @objc public let request: URLRequest
     @objc open var favicon: FaviconFacade?
 
     init(request: URLRequest) {
