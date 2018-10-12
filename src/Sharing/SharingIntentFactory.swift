@@ -101,7 +101,7 @@ open class SharingIntentFactory {
     open static func makeController(
         _ factory: SharingIntentFactory,
         activityItems: [AnyObject],
-        excludedActivities: [UIActivityType]?,
+        excludedActivities: [UIActivity.ActivityType]?,
         completion: @escaping (Bool, Error?) -> Void) -> UIActivityViewController {
         let activities = factory.adapters.reduce([UIActivity]()) { result, adapter in
             if let activity = adapter.activity {

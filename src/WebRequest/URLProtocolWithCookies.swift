@@ -56,8 +56,8 @@ public final class URLProtocolWithCookies: URLProtocol {
 
         // Taken from reference implementation
         var calculatedModes = [String]()
-        calculatedModes.append(RunLoopMode.defaultRunLoopMode.rawValue)
-        if let currentMode = RunLoop.current.currentMode, currentMode != RunLoopMode.defaultRunLoopMode {
+        calculatedModes.append(RunLoop.Mode.default.rawValue)
+        if let currentMode = RunLoop.current.currentMode, currentMode != RunLoop.Mode.default {
             calculatedModes.append(currentMode.rawValue)
         }
 
