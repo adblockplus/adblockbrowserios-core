@@ -51,8 +51,8 @@ public final class EventDispatcher: NSObject {
         }
 
         if let completion = completion {
-            dispatch(callbacks, json: json) { (results) in
-                completion(results.map { (input) -> Result<R> in
+            dispatch(callbacks, json: json) { results in
+                completion(results.map { input -> Result<R> in
                     switch input {
                     case .success(let output):
                         if let result = R(json: output) {

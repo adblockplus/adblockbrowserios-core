@@ -262,7 +262,7 @@ public final class BrowserHistoryManager: NSObject {
             return nil
         }
 
-        var outputIcon: UrlIcon? = nil
+        var outputIcon: UrlIcon?
         var outputSize = Int16.max
 
         for icon in historyEntries.compactMap({ $0.icon }) + bookmarks.compactMap({ $0.icon }) {

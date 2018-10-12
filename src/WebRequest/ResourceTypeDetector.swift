@@ -56,7 +56,7 @@ public enum WebRequestResourceType: Int {
     }
 }
 
-    // MARK: Synchronous detectors
+// MARK: Synchronous detectors
 
 open class ResourceTypeDetector: NSObject {
     /// There is not very much of them nor big variety in them, so replacing with
@@ -261,10 +261,10 @@ open class ResourceTypeDetector: NSObject {
     }
 
     public static func queryFrameContext(_ context: JSContext?,
-                                       webThread: Thread?,
-                                       url: URL,
-                                       operationQueue: OperationQueue,
-                                       _ callback: @escaping (_ resourceType: WebRequestResourceType, _ isTentative: Bool) -> Void) {
+                                         webThread: Thread?,
+                                         url: URL,
+                                         operationQueue: OperationQueue,
+                                         _ callback: @escaping (_ resourceType: WebRequestResourceType, _ isTentative: Bool) -> Void) {
         guard let context = context, let webThread = webThread else {
             /*
              Normally, JS context is already available here (didCreate was already called)
