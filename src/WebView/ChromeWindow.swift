@@ -45,11 +45,11 @@ protocol ChromeWindowExProtocol {
 
 @objc
 open class ChromeWindow: NSObject {
-    open let identifier: UInt
+    public let identifier: UInt
 
-    open unowned let chrome: Chrome
+    public unowned let chrome: Chrome
 
-    open let incognito: Bool
+    public let incognito: Bool
 
     @objc dynamic open internal(set) var tabs: NSArray = []
 

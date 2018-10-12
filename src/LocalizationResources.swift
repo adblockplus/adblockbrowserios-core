@@ -32,20 +32,20 @@ public func bundleLocalizedString(_ key: String, comment: String) -> String {
 
 @objcMembers
 open class LocalizationResources: NSObject {
-    open static func alertCancelText() -> String {
+    public static func alertCancelText() -> String {
         return bundleLocalizedString("Cancel", comment: "Generic alert Popup button")
     }
 
-    open static func alertOKText() -> String {
+    public static func alertOKText() -> String {
         return bundleLocalizedString("OK", comment: "Generic alert Popup button")
     }
 
-    open static func downloadFailureAlertTitle() -> String {
+    public static func downloadFailureAlertTitle() -> String {
         return bundleLocalizedString("Download failed", comment: "Web download failure alert title")
     }
 
     // Awkward accessor for the above convenience global func to be accessible from Objc
-    open static func bundleString(_ key: String, comment: String) -> String {
+    public static func bundleString(_ key: String, comment: String) -> String {
         return bundleLocalizedString(key, comment: comment)
     }
 }

@@ -31,7 +31,7 @@ public extension Collection {
     }
 }
 
-public extension Collection where Index == Int, Indices == CountableRange<Index> {
+public extension Collection where Indices == CountableRange<Index> {
     public func element(at index: Index) -> Iterator.Element? {
         if indices.contains(index) {
             return self[index]

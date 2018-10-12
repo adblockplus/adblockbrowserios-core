@@ -21,7 +21,7 @@
  */
 
 open class Sys {
-    open static let physicalMemory: Int64 =
+    public static let physicalMemory: Int64 =
         // NSProcessInfo.processInfo().physicalMemory // Returns 0 on real device???
         {
             do {
@@ -34,7 +34,7 @@ open class Sys {
     }()
 
     public typealias MemoryValues = (resident: Int64, allowed: Int64, physical: Int64)
-    open static func memoryUsage() -> MemoryValues {
+    public static func memoryUsage() -> MemoryValues {
         var info = task_basic_info()
         let machTaskBasicInfoCount = (MemoryLayout<mach_task_basic_info_data_t>.size / MemoryLayout<natural_t>.size)
         var count = mach_msg_type_number_t(machTaskBasicInfoCount)
@@ -71,7 +71,7 @@ open class Sys {
 
     // Recognizable "commercial" device model name
     // i.e. not "iPhone6,2" but "iPhone 5s"
-    open static let deviceModelName: String = {
+    public static let deviceModelName: String = {
 
         var systemInfo = utsname() // C: struct utsname
         uname(&systemInfo)

@@ -50,9 +50,9 @@ struct ContentWebViewUpdatedProperties: OptionSet {
 
 @objc
 open class ChromeTab: NSObject {
-    @objc open let identifier: UInt
-    open unowned let window: ChromeWindow
-    open let incognito: Bool
+    @objc public let identifier: UInt
+    public unowned let window: ChromeWindow
+    public let incognito: Bool
     open weak var openerTab: ChromeTab?
     open weak var openerFrame: KittFrame?
 

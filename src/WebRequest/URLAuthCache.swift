@@ -31,7 +31,7 @@ import Foundation
  */
 @objc
 open class URLAuthCache: NSObject {
-    @objc open static let sharedInstance = URLAuthCache()
+    @objc public static let sharedInstance = URLAuthCache()
 
     fileprivate let cache = NSCache<AnyObject, AnyObject>()
 

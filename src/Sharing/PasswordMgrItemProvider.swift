@@ -56,7 +56,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     fileprivate var extensionItem: NSExtensionItem?
     fileprivate static let extensionInstance = OnePasswordExtension.shared()
 
-    open static func isPasswordMgrAvailable() -> Bool {
+    public static func isPasswordMgrAvailable() -> Bool {
         return extensionInstance.isAppExtensionAvailable()
     }
 
@@ -71,7 +71,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     }
 
     // Factory pattern to encapsulate the asynchronous design of OnePassword extension item creation
-    open static func create( _ forWebView: UIWebView,
+    public static func create( _ forWebView: UIWebView,
                              defaultProvider: UIActivityItemProvider,
                              completionHandler:@escaping (PasswordMgrItemProvider?, Error?) -> Void ) {
         let instance = PasswordMgrItemProvider(webView: forWebView, defaultProvider: defaultProvider)
@@ -105,7 +105,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
         // the extension internal constants get changed. But as we can't distinguish which particular
         // item provider and registered type is the right one, it can be used only if there is only
         // one of each. Which is the current OnePassword design.
-        if let itemProviders = extensionItem?.attachments as? [NSItemProvider], itemProviders.count == 1 {
+        if let itemProviders = extensionItem?.attachments, itemProviders.count == 1 {
             let types = itemProviders[0].registeredTypeIdentifiers
             if types.count == 1 {
                 return types[0]
