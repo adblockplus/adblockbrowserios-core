@@ -159,7 +159,7 @@ static NSRegularExpression *_rexWhitespaces;
     return NSNotFound;
 }
 
-+ (NSString *)callbackOriginDescription:(CallbackOriginType)origin
++ (nonnull NSString *)callbackOriginDescription:(CallbackOriginType)origin
 {
     switch (origin) {
         case CallbackOriginContent:

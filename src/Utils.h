@@ -77,7 +77,7 @@
 + (NSUInteger)indexOfMatchInRegexArray:(NSArray *)regexes
                              forString:(NSString *)matchString;
 
-+ (NSString *)callbackOriginDescription:(CallbackOriginType)origin;
++ (nonnull NSString *)callbackOriginDescription:(CallbackOriginType)origin;
 
 /// returns CFBundleName from main bundle
 + (NSString *)applicationName;
