@@ -80,7 +80,7 @@
 + (nonnull NSString *)callbackOriginDescription:(CallbackOriginType)origin;
 
 /// returns CFBundleName from main bundle
-+ (NSString *_Nonnull)applicationName;
++ (NSString * _Nonnull)applicationName;
 
 /**
  The test case:

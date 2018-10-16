@@ -171,7 +171,7 @@ static NSRegularExpression *_rexWhitespaces;
     }
 }
 
-+ (NSString *_Nonnull)applicationName
++ (NSString * _Nonnull)applicationName
 {
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
 }
