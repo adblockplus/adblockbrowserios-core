@@ -19,12 +19,12 @@ import Foundation
 
 /// Activity wrapper for "add to bookmarks" button
 open class AddBookmarkActivity: UIActivity {
-    override open class var activityCategory: UIActivityCategory {
-        return UIActivityCategory.action
+    override open class var activityCategory: UIActivity.Category {
+        return UIActivity.Category.action
     }
 
-    override open var activityType: UIActivityType {
-        return UIActivityType("AddBookmarkActivityType")
+    override open var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType("AddBookmarkActivityType")
     }
 
     override open var activityTitle: String? {

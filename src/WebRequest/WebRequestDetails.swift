@@ -22,20 +22,20 @@ private var requestIdCounter: UInt = 0
 @objcMembers
 public final class WebRequestDetails: NSObject {
     fileprivate var requestId: UInt
-    open var request: URLRequest
+    public var request: URLRequest
 
-    open var stage: String?
-    open var tabId: UInt
-    open var frameId: UInt = 0
-    open var parentFrameId: Int = 0
-    open var resourceType: WebRequestResourceType
-    open var resourceTypeTentative = false
-    open var isXHRAsync = true
+    public var stage: String?
+    public var tabId: UInt
+    public var frameId: UInt = 0
+    public var parentFrameId: Int = 0
+    public var resourceType: WebRequestResourceType
+    public var resourceTypeTentative = false
+    public var isXHRAsync = true
 
     // none of them used there. It's just injected from the outside
-    open var requestBody: NSString?
-    open var requestHeaders: [String: String]?
-    open var responseHeaders: [String: String]?
+    public var requestBody: NSString?
+    public var requestHeaders: [String: String]?
+    public var responseHeaders: [String: String]?
 
     static func separateKittValuesFromAcceptType(_ acceptHeaderCsvInput: String) -> (String?, [String]) {
         var kittElements = [String]()
@@ -71,7 +71,7 @@ public final class WebRequestDetails: NSObject {
         }
     }
 
-    open func dictionaryForListenerEvent() -> [String: Any] {
+    public func dictionaryForListenerEvent() -> [String: Any] {
         let reachabilityString: String
         switch ReachabilityCentral.currentInternetReachabilityStatus() {
         case .ReachableViaWiFi:
@@ -102,7 +102,7 @@ public final class WebRequestDetails: NSObject {
         return ret
     }
 
-    open var resourceTypeString: String {
+    public var resourceTypeString: String {
         return resourceType.toString()
     }
 }

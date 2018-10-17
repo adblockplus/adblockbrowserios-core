@@ -159,7 +159,7 @@ static NSRegularExpression *_rexWhitespaces;
     return NSNotFound;
 }
 
-+ (NSString *)callbackOriginDescription:(CallbackOriginType)origin
++ (nonnull NSString *)callbackOriginDescription:(CallbackOriginType)origin
 {
     switch (origin) {
         case CallbackOriginContent:
@@ -171,12 +171,12 @@ static NSRegularExpression *_rexWhitespaces;
     }
 }
 
-+ (NSString *)applicationName
++ (NSString * _Nonnull)applicationName
 {
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
 }
 
-+ (BOOL)isObjectReferenceNil:(id)reference
++ (BOOL)isObjectReferenceNil:(id _Nullable )reference
 {
     return reference == nil;
 }

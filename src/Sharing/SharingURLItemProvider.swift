@@ -54,7 +54,7 @@ open class SharingURLItemProvider: UIActivityItemProvider {
     }
 
     open override func activityViewController(_ activityViewController: UIActivityViewController,
-                                              subjectForActivityType activityType: UIActivityType?) -> String {
+                                              subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
         return title
     }
 }

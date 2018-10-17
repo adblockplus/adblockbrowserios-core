@@ -32,7 +32,7 @@ import Foundation
  */
 open class TitleTextItemProvider: UIActivityItemProvider {
     // to be extended whenever a subject duplication appears in some other extension integration
-    fileprivate let subjectAwareActivities = [UIActivityType.mail, UIActivityType.message]
+    fileprivate let subjectAwareActivities = [UIActivity.ActivityType.mail, UIActivity.ActivityType.message]
 
     public init(title: String) {
         super.init(placeholderItem: title)

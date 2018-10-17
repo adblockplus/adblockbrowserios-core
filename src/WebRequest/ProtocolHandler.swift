@@ -56,7 +56,7 @@ final public class ProtocolHandler: URLProtocol {
     fileprivate var stoppedLoading = false
 
     fileprivate var clientThread: Thread?
-    fileprivate var modes: [RunLoopMode]?
+    fileprivate var modes: [RunLoop.Mode]?
 
     fileprivate var activeConnection: NSURLConnection? {
         willSet {
@@ -297,9 +297,9 @@ extension ProtocolHandler {
         clientThread = Thread.current
 
         /// UIWebView runs this in "WebCoreSynchronousLoaderRunLoopMode"
-        var calculatedModes = [RunLoopMode.defaultRunLoopMode]
+        var calculatedModes = [RunLoop.Mode.default]
         if let currentMode = RunLoop.current.currentMode {
-            if currentMode != RunLoopMode.defaultRunLoopMode {
+            if currentMode != RunLoop.Mode.default {
                 calculatedModes.append(currentMode)
             }
         }

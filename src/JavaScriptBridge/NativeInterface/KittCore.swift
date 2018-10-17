@@ -55,7 +55,7 @@ extension KittCore: KittCoreProtocol {
         #if DEBUG
             let extensionId = context.`extension`.extensionId
             let tabId = (context.source as? SAContentWebView)?.identifier ?? 0
-            let originDescription = Utils.callbackOriginDescription(context.source.origin) ?? ""
+            let originDescription = Utils.callbackOriginDescription(context.source.origin)
             let messageString = "\(message)"
 
             Log.debug("\(extensionId)|\(originDescription)-\(tabId)|\(messageString)")

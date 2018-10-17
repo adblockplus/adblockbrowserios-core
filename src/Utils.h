@@ -77,10 +77,10 @@
 + (NSUInteger)indexOfMatchInRegexArray:(NSArray *)regexes
                              forString:(NSString *)matchString;
 
-+ (NSString *)callbackOriginDescription:(CallbackOriginType)origin;
++ (nonnull NSString *)callbackOriginDescription:(CallbackOriginType)origin;
 
 /// returns CFBundleName from main bundle
-+ (NSString *)applicationName;
++ (NSString * _Nonnull)applicationName;
 
 /**
  The test case:
@@ -93,6 +93,6 @@
  to compile a nilness check on nonoptional type. If tricked (supposedly) through casting to optional
  ancestor type, the check is observably optimized away.
  */
-+ (BOOL)isObjectReferenceNil:(id)reference;
++ (BOOL)isObjectReferenceNil:(id _Nullable )reference;
 
 @end
