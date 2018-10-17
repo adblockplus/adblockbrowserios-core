@@ -27,7 +27,7 @@ public extension NSObject {
 
         // find the frame originating webview
         /*let frameInternalWebView = frame.valueForKeyPath:("webView")*/
-        var originatingWebView: UIWebView? = nil
+        var originatingWebView: UIWebView?
         for knownWebView in WebViewManager.sharedInstance.webViews {
             // Skip views which are not UIWebView
             if knownWebView.value(forKeyPath: "documentView.webView") as AnyObject === webView {

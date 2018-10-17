@@ -156,7 +156,7 @@ final class ChromeWindowEx<T>: ChromeWindow, ChromeWindowExProtocol where T: Chr
         }
 
         // Find active tab
-        var newActiveTab: ChromeTab? = nil
+        var newActiveTab: ChromeTab?
 
         if let tab = activeTab, tabsToRemove.contains(tab) {
             // Try to find nearest tab to active tab

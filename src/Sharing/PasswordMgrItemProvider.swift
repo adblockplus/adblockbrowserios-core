@@ -72,8 +72,8 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
 
     // Factory pattern to encapsulate the asynchronous design of OnePassword extension item creation
     public static func create( _ forWebView: UIWebView,
-                             defaultProvider: UIActivityItemProvider,
-                             completionHandler:@escaping (PasswordMgrItemProvider?, Error?) -> Void ) {
+                               defaultProvider: UIActivityItemProvider,
+                               completionHandler:@escaping (PasswordMgrItemProvider?, Error?) -> Void ) {
         let instance = PasswordMgrItemProvider(webView: forWebView, defaultProvider: defaultProvider)
         extensionInstance.createExtensionItem(forWebView: forWebView, completion: { extensionItem, error -> Void in
             guard error == nil else {

@@ -56,7 +56,7 @@ open class SharingIntentFactory {
         _ = add(
             matcher: { selectedActivity in
                 selectedActivity == activityType
-        },
+            },
             handler: handler,
             activity: nil
         )
@@ -73,7 +73,7 @@ open class SharingIntentFactory {
                 } else {
                     return false
                 }
-        },
+            },
             handler: handler,
             activity: activity
         )

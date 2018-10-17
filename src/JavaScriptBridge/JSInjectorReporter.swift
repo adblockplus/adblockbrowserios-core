@@ -130,7 +130,7 @@ extension JSInjectorReporter {
 
         // This completion block is called from Javascript.
         // Response contains either result or error.
-        let jsCompletion: JSCompletion = { [weak self] (response) in
+        let jsCompletion: JSCompletion = { [weak self] response in
             // Dispatch from web thread to main thread
             DispatchQueue.main.async { [weak self] () -> Void in
                 switch response {
