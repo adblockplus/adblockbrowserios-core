@@ -333,7 +333,6 @@
 		69259CA41DC899150033A327 /* Pods_AdblockBrowser.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_AdblockBrowser.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/Pods_AdblockBrowser.framework"; sourceTree = "<group>"; };
 		69259CA61DC8992D0033A327 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/CocoaLumberjack/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		69259CA81DC8996B0033A327 /* AttributedMarkdown.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AttributedMarkdown.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/AttributedMarkdown/AttributedMarkdown.framework"; sourceTree = "<group>"; };
-		69259CA91DC8996B0033A327 /* CYRKeyboardButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CYRKeyboardButton.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/CYRKeyboardButton/CYRKeyboardButton.framework"; sourceTree = "<group>"; };
 		69259CAC1DC8996F0033A327 /* Regex.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Regex.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/STRegex/Regex.framework"; sourceTree = "<group>"; };
 		69259CAD1DC8996F0033A327 /* TurtleBezierPath.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TurtleBezierPath.framework; path = "../../Library/Developer/Xcode/DerivedData/AdblockBrowser-czgaqkedoadqydfqpkzqebduybex/Build/Products/Debug-iphonesimulator/TurtleBezierPath/TurtleBezierPath.framework"; sourceTree = "<group>"; };
 		6926C9BD1DBE361500176756 /* FileSystemChromeStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FileSystemChromeStorage.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -881,7 +880,6 @@
 				69259CAC1DC8996F0033A327 /* Regex.framework */,
 				69259CAD1DC8996F0033A327 /* TurtleBezierPath.framework */,
 				69259CA81DC8996B0033A327 /* AttributedMarkdown.framework */,
-				69259CA91DC8996B0033A327 /* CYRKeyboardButton.framework */,
 				69259CA61DC8992D0033A327 /* CocoaLumberjack.framework */,
 				69259CA41DC899150033A327 /* Pods_AdblockBrowser.framework */,
 				E98EADB01C4023ED00ADDF33 /* CocoaLumberjack.framework */,
