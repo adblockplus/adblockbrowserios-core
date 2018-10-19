@@ -61,7 +61,8 @@
 /// @param bundle data as received from server
 /// @param extensionId
 /// @param error [out] any error occured during the unpacking
-- (void)unpackBundleData:(NSData *)data
+/// @return based on whether operation was successful or not
+- (BOOL)unpackBundleData:(NSData *)data
          asExtensionOfId:(NSString *)extensionId
                    error:(NSError **)error;
 
@@ -72,7 +73,7 @@
 
 /// Remove already installed/unpacked extension
 /// @param error [out] any error occured when accessing the filesystem
-- (void)deleteUnpackedExtensionOfId:(NSString *)extensionId
+- (BOOL)deleteUnpackedExtensionOfId:(NSString *)extensionId
                               error:(NSError **)error;
 
 /// Tell whether such extension id is already installed

@@ -64,7 +64,7 @@ static NSDictionary *menuContextTypeMapping;
     return self;
 }
 
-- (void)setInitialProperties:(NSDictionary *)properties error:(NSError *__autoreleasing *)error
+- (BOOL)setInitialProperties:(NSDictionary *)properties error:(NSError *__autoreleasing *)error
 {
     // deep mutable copy
     _properties = [NSMutableDictionary dictionaryWithDictionary:properties];
@@ -85,9 +85,10 @@ static NSDictionary *menuContextTypeMapping;
         }
         contexts = [NSArray arrayWithArray:contextsMutable];
     }
+    return YES;
 }
 
-- (void)mergeWithProperties:(NSDictionary *)properties error:(NSError *__autoreleasing *)error
+- (BOOL)mergeWithProperties:(NSDictionary *)properties error:(NSError *__autoreleasing *)error
 {
     // the properties dictionary must be kept mutable, so make a mutable copy
     // of the incoming dictionary and the merge its values with the existing dictionary
@@ -105,6 +106,7 @@ static NSDictionary *menuContextTypeMapping;
             break;
         }
     }
+    return YES;
 }
 
 - (NSArray *)arrayOfRegexesForDocumentURL
@@ -134,7 +136,7 @@ static NSDictionary *menuContextTypeMapping;
     return [_properties objectForKey:KEY_TITLE];
 }
 
-- (void)exchangeStringsForRegexesInPropertyForKey:(NSString *)key
+- (BOOL)exchangeStringsForRegexesInPropertyForKey:(NSString *)key
                                             error:(NSError *__autoreleasing *)error
 {
     NSMutableArray *strings = [_properties objectForKey:key];
@@ -146,6 +148,7 @@ static NSDictionary *menuContextTypeMapping;
     // set regardless of error, so that properties hold instances of
     // NSRegularExpression instead of NSString
     [_properties setObject:regexes forKey:key];
+    return YES;
 }
 
 - (UIImage *)grayscaleIcon

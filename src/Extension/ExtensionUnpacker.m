@@ -72,7 +72,7 @@
     return self;
 }
 
-- (void)unpackBundleData:(NSData *)data
+- (BOOL)unpackBundleData:(NSData *)data
          asExtensionOfId:(NSString *)extensionId
                    error:(NSError *__autoreleasing *)error
 {
@@ -80,29 +80,31 @@
     NSError *crxError = nil;
     if (![data crxGetZipContent:&zipData error:&crxError]) {
         [Utils error:error wrapping:crxError message:@"Chrome bundle parsing failure"];
-        return;
+        return NO;
     }
     // write the data to temp file
     [zipData writeToFile:_tempZipFilePath atomically:YES];
     if (![[NSFileManager defaultManager] fileExistsAtPath:_tempZipFilePath]) {
         [Utils error:error wrapping:nil message:@"Can't create tempfile, out of memory?"];
-        return;
+        return NO;
     }
     NSString *folder = [self pathForExtensionId:extensionId resource:nil error:error];
     if (*error) {
-        return;
+        return NO;
     }
     _unzipErrorCall = nil;
     if (![_unzipper UnzipOpenFile:_tempZipFilePath]) {
         [Utils error:error wrapping:nil message:_unzipErrorCall];
-        return;
+        return NO;
     }
     if (![_unzipper UnzipFileTo:folder overWrite:YES]) {
         [Utils error:error wrapping:nil message:_unzipErrorCall];
-        return;
+        return NO;
     }
     [_unzipper UnzipCloseFile];
     [[NSFileManager defaultManager] removeItemAtPath:_tempZipFilePath error:error];
+
+    return YES;
 }
 
 - (NSArray *)arrayOfInstalledExtensionIdsOrError:(NSError *__autoreleasing *)error
@@ -136,14 +138,15 @@
     return [extensionIds filteredArrayUsingPredicate:_extensionFolderMatchPredicate];
 }
 
-- (void)deleteUnpackedExtensionOfId:(NSString *)extensionId
+- (BOOL)deleteUnpackedExtensionOfId:(NSString *)extensionId
                               error:(NSError *__autoreleasing *)error
 {
     NSString *path = [self pathForExtensionId:extensionId error:error];
     if (*error) {
-        return;
+        return NO;
     }
     [[NSFileManager defaultManager] removeItemAtPath:path error:error];
+    return YES;
 }
 
 - (BOOL)hasExtensionOfId:(NSString *)extensionId

@@ -164,18 +164,19 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
     return [_extensions objectAtIndex:number];
 }
 
-- (void)removeExtensionAtIndex:(NSInteger)idx error:(NSError *__autoreleasing *)error
+- (BOOL)removeExtensionAtIndex:(NSInteger)idx error:(NSError *__autoreleasing *)error
 {
     BrowserExtension *extension = [_extensions objectAtIndex:idx];
     if (!extension) {
         [Utils error:error wrapping:nil message:@"Model instructed to remove nonexistent script at index %d", idx];
-        return;
+        return NO;
     }
     [self removeExtension:extension];
     [self removeExtensionSupportDataById:extension.extensionId persistData:NO error:error];
+    return YES;
 }
 
-- (void)removeExtensionSupportDataById:(NSString *)extensionId
+- (BOOL)removeExtensionSupportDataById:(NSString *)extensionId
                            persistData:(BOOL)persist
                                  error:(NSError *__autoreleasing *)error
 {
@@ -184,9 +185,12 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
         Extension *extension = [_persistence extensionObjectWithId:extensionId];
         if (extension) {
             [_persistence deleteManagedObjects:@[ extension ]];
+            return YES;
         }
     }
+    return NO;
 }
+
 - (void)removeExtension:(BrowserExtension *)extension
 {
     [self callDelegatesWithEvent:@selector(onModelWillRemoveExtension:) andParameter:extension];
@@ -438,16 +442,17 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
     return newExtension;
 }
 
-- (void)configureExtensionWithId:(NSString *)extensionId
+- (BOOL)configureExtensionWithId:(NSString *)extensionId
                withKeysAndValues:(NSDictionary *)keysAndValues
                            error:(NSError *__autoreleasing *)error
 {
     BrowserExtension *extension = [self extensionWithId:extensionId];
     if (!extension) {
         [Utils error:error wrapping:nil message:@"Cannot configure '%@', id invalid", extensionId];
-        return;
+        return NO;
     }
     [extension.storage merge:keysAndValues error:error];
+    return YES;
 }
 
 - (NSInteger)injectContentScriptToContext:(JSContext *)context
