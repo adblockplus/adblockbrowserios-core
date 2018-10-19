@@ -139,14 +139,15 @@
     return [extensionIds filteredArrayUsingPredicate:_extensionFolderMatchPredicate];
 }
 
-- (void)deleteUnpackedExtensionOfId:(NSString *)extensionId
+- (BOOL)deleteUnpackedExtensionOfId:(NSString *)extensionId
                               error:(NSError *__autoreleasing *)error
 {
     NSString *path = [self pathForExtensionId:extensionId error:error];
     if (*error) {
-        return;
+        return NO;
     }
     [[NSFileManager defaultManager] removeItemAtPath:path error:error];
+    return YES;
 }
 
 - (BOOL)hasExtensionOfId:(NSString *)extensionId

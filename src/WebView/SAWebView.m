@@ -200,6 +200,7 @@ static NSUInteger _staticSubFrameIdentifier = 1;
             [self.frameContextOwningMap setObject:kittFrame forKey:newFrame];
         }
     }
+    NSAssert(kittFrame != nil, @"A kittFrame instance should be assigned here.");
     kittFrame.context = context;
     kittFrame.provisional = false;
     JSValue *href = [context globalObject][@"location"][@"href"];

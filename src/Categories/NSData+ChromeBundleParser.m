@@ -50,7 +50,10 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
     uint32_t blockIn;
     range->length = sizeof(blockIn);
     if (![self checkedGetBytes:&blockIn rangeMove:range]) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:code userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:code userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     *number = CFSwapInt32LittleToHost(blockIn);
@@ -63,9 +66,15 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
     char headerBlock[HEADER_ALIGNMENT];
     NSRange range = NSMakeRange(0, HEADER_ALIGNMENT);
     if (![self checkedGetBytes:&headerBlock rangeMove:&range]) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_MAGIC_UNDERFLOW userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_MAGIC_UNDERFLOW userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
     } else if (memcmp(CRX_MAGIC, headerBlock, HEADER_ALIGNMENT) != 0) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_MAGIC_BAD userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_MAGIC_BAD userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     __unused NSUInteger version = 0;
@@ -77,7 +86,10 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
         return NO;
     }
     if (pubKeyLen == 0) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_PUBKEY_ZERO_LENGTH userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_PUBKEY_ZERO_LENGTH userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     NSUInteger signLen = 0;
@@ -85,32 +97,47 @@ static const unsigned char CRX_MAGIC[HEADER_ALIGNMENT] = { 0x43, 0x72, 0x32, 0x3
         return NO;
     }
     if (signLen == 0) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_SIG_ZERO_LENGTH userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_SIG_ZERO_LENGTH userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     char pubKey[pubKeyLen];
     range.length = pubKeyLen;
     if (![self checkedGetBytes:&pubKey rangeMove:&range]) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_PUBKEY_UNDERFLOW userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_PUBKEY_UNDERFLOW userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     char signature[signLen];
     range.length = signLen;
     if (![self checkedGetBytes:&signature rangeMove:&range]) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_SIG_UNDERFLOW userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_SIG_UNDERFLOW userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     // ZIP to the end
     range.length = self.length - range.location;
     if (range.length == 0) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_ZIP_ZERO_LENGTH userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_ZIP_ZERO_LENGTH userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     *data = [self subdataWithRange:range];
 
     unsigned char digest[CC_SHA1_DIGEST_LENGTH];
     if (CC_SHA1([*data bytes], (CC_LONG)range.length, digest) != digest) {
-        *error = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_ZIP_DIGEST_FAIL userInfo:nil];
+        NSError *localError = [NSError errorWithDomain:ERROR_DOMAIN code:CRX_ZIP_DIGEST_FAIL userInfo:nil];
+        if (error) {
+            *error = localError;
+        }
         return NO;
     }
     // @todo check signature
