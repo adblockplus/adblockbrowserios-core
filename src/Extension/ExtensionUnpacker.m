@@ -34,14 +34,9 @@
 // which iOS creates everywhere
 #define ADDON_FOLDER_PREDICATE @"^[A-Za-z0-9_-]+$"
 
-@interface ExtensionUnpacker () <ZipArchiveDelegate>
-@property (nonatomic, strong) ZipArchive *unzipper;
+@interface ExtensionUnpacker ()
 /// See TEMPFILE_NAME
 @property (nonatomic, strong) NSString *tempZipFilePath;
-/// ZipArchive has a weird design of sending out the internal errors via
-/// delegate callbacks, so if we want to remember the error when the ZipArchive
-/// call returns, we need a transport variable
-@property (nonatomic, strong) NSString *unzipErrorCall;
 /// See ADDON_FOLDER_PREDICATE
 @property (nonatomic, strong) NSPredicate *extensionFolderMatchPredicate;
 
@@ -64,8 +59,6 @@
 {
     self = [super init];
     if (self) {
-        _unzipper = [ZipArchive new];
-        _unzipper.delegate = self;
         _tempZipFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:TEMPFILE_NAME];
         _extensionFolderMatchPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", ADDON_FOLDER_PREDICATE];
     }
@@ -92,18 +85,16 @@
     if (*error) {
         return NO;
     }
-    _unzipErrorCall = nil;
-    if (![_unzipper UnzipOpenFile:_tempZipFilePath]) {
-        [Utils error:error wrapping:nil message:_unzipErrorCall];
+    NSError *unzipError = nil;
+    if (![SSZipArchive unzipFileAtPath:_tempZipFilePath
+                         toDestination:folder
+                             overwrite:YES
+                              password:nil
+                                 error:&unzipError]) {
+        [Utils error:error wrapping:nil message:[unzipError localizedDescription]];
         return NO;
     }
-    if (![_unzipper UnzipFileTo:folder overWrite:YES]) {
-        [Utils error:error wrapping:nil message:_unzipErrorCall];
-        return NO;
-    }
-    [_unzipper UnzipCloseFile];
     [[NSFileManager defaultManager] removeItemAtPath:_tempZipFilePath error:error];
-
     return YES;
 }
 
@@ -263,18 +254,4 @@
     }
     return path;
 }
-
-#pragma mark - ZipArchiveDelegate
-
-- (void)ErrorMessage:(NSString *)msg
-{
-    _unzipErrorCall = msg;
-}
-
-- (BOOL)OverWriteOperation:(NSString *)file
-{
-    // currently no established philosophy for extension upgrading, allow overwriting
-    return YES;
-}
-
 @end

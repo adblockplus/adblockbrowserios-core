@@ -7,6 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		291E6954217A2D8800216AF1 /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E692C217A2D8700216AF1 /* SSZipArchive.h */; };
+		291E6955217A2D8800216AF1 /* ZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E692D217A2D8800216AF1 /* ZipArchive.h */; };
+		291E6956217A2D8800216AF1 /* SSZipCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E692E217A2D8800216AF1 /* SSZipCommon.h */; };
+		291E6957217A2D8800216AF1 /* crypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6930217A2D8800216AF1 /* crypt.c */; };
+		291E6958217A2D8800216AF1 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6931217A2D8800216AF1 /* unzip.c */; };
+		291E6959217A2D8800216AF1 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6932217A2D8800216AF1 /* zip.c */; };
+		291E695A217A2D8800216AF1 /* minishared.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6933217A2D8800216AF1 /* minishared.h */; };
+		291E695B217A2D8800216AF1 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6934217A2D8800216AF1 /* ioapi.c */; };
+		291E695C217A2D8800216AF1 /* ioapi_mem.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6935217A2D8800216AF1 /* ioapi_mem.h */; };
+		291E695D217A2D8800216AF1 /* ioapi_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6936217A2D8800216AF1 /* ioapi_buf.c */; };
+		291E695E217A2D8800216AF1 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6937217A2D8800216AF1 /* crypt.h */; };
+		291E695F217A2D8800216AF1 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6938217A2D8800216AF1 /* zip.h */; };
+		291E6960217A2D8800216AF1 /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6939217A2D8800216AF1 /* unzip.h */; };
+		291E6961217A2D8800216AF1 /* ioapi_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E693A217A2D8800216AF1 /* ioapi_mem.c */; };
+		291E6962217A2D8800216AF1 /* minishared.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E693B217A2D8800216AF1 /* minishared.c */; };
+		291E6963217A2D8800216AF1 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E693C217A2D8800216AF1 /* ioapi.h */; };
+		291E6964217A2D8800216AF1 /* ioapi_buf.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E693D217A2D8800216AF1 /* ioapi_buf.h */; };
+		291E6965217A2D8800216AF1 /* prng.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E693F217A2D8800216AF1 /* prng.h */; };
+		291E6966217A2D8800216AF1 /* aes_ni.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6940217A2D8800216AF1 /* aes_ni.h */; };
+		291E6967217A2D8800216AF1 /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6941217A2D8800216AF1 /* aeskey.c */; };
+		291E6968217A2D8800216AF1 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6942217A2D8800216AF1 /* hmac.c */; };
+		291E6969217A2D8800216AF1 /* aestab.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6943217A2D8800216AF1 /* aestab.h */; };
+		291E696A217A2D8800216AF1 /* pwd2key.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6944217A2D8800216AF1 /* pwd2key.h */; };
+		291E696B217A2D8800216AF1 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6945217A2D8800216AF1 /* aescrypt.c */; };
+		291E696C217A2D8800216AF1 /* fileenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6946217A2D8800216AF1 /* fileenc.c */; };
+		291E696D217A2D8800216AF1 /* aesopt.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6947217A2D8800216AF1 /* aesopt.h */; };
+		291E696E217A2D8800216AF1 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6948217A2D8800216AF1 /* sha1.c */; };
+		291E696F217A2D8800216AF1 /* brg_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6949217A2D8800216AF1 /* brg_types.h */; };
+		291E6970217A2D8800216AF1 /* hmac.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E694A217A2D8800216AF1 /* hmac.h */; };
+		291E6971217A2D8800216AF1 /* aes_ni.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E694B217A2D8800216AF1 /* aes_ni.c */; };
+		291E6972217A2D8800216AF1 /* brg_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E694C217A2D8800216AF1 /* brg_endian.h */; };
+		291E6973217A2D8800216AF1 /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E694D217A2D8800216AF1 /* prng.c */; };
+		291E6974217A2D8800216AF1 /* aes.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E694E217A2D8800216AF1 /* aes.h */; };
+		291E6975217A2D8800216AF1 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E694F217A2D8800216AF1 /* pwd2key.c */; };
+		291E6976217A2D8800216AF1 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = 291E6950217A2D8800216AF1 /* aestab.c */; };
+		291E6977217A2D8800216AF1 /* sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6951217A2D8800216AF1 /* sha1.h */; };
+		291E6978217A2D8800216AF1 /* fileenc.h in Headers */ = {isa = PBXBuildFile; fileRef = 291E6952217A2D8800216AF1 /* fileenc.h */; };
+		291E6979217A2D8800216AF1 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 291E6953217A2D8800216AF1 /* SSZipArchive.m */; };
 		69006ECE1CEB132E00ECF05E /* ProviderFindInPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006ECD1CEB132E00ECF05E /* ProviderFindInPage.swift */; };
 		69006EDE1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006EDD1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift */; };
 		69006EE01CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69006EDF1CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift */; };
@@ -193,17 +231,6 @@
 		E9EC700E1B25D79800C4C905 /* KittCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9EC70021B25D79800C4C905 /* KittCore.framework */; };
 		E9EC70821B25D99100C4C905 /* NSTimer+Blocks.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC704A1B25D99100C4C905 /* NSTimer+Blocks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9EC70831B25D99100C4C905 /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = E9EC704B1B25D99100C4C905 /* NSTimer+Blocks.m */; };
-		E9EC708E1B25D99100C4C905 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC705A1B25D99100C4C905 /* crypt.h */; };
-		E9EC708F1B25D99100C4C905 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = E9EC705B1B25D99100C4C905 /* ioapi.c */; };
-		E9EC70901B25D99100C4C905 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC705C1B25D99100C4C905 /* ioapi.h */; };
-		E9EC70911B25D99100C4C905 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = E9EC705D1B25D99100C4C905 /* mztools.c */; };
-		E9EC70921B25D99100C4C905 /* mztools.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC705E1B25D99100C4C905 /* mztools.h */; };
-		E9EC70931B25D99100C4C905 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = E9EC705F1B25D99100C4C905 /* unzip.c */; };
-		E9EC70941B25D99100C4C905 /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC70601B25D99100C4C905 /* unzip.h */; };
-		E9EC70951B25D99100C4C905 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = E9EC70611B25D99100C4C905 /* zip.c */; };
-		E9EC70961B25D99100C4C905 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC70621B25D99100C4C905 /* zip.h */; };
-		E9EC70971B25D99100C4C905 /* ZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC70631B25D99100C4C905 /* ZipArchive.h */; };
-		E9EC70981B25D99100C4C905 /* ZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = E9EC70641B25D99100C4C905 /* ZipArchive.m */; };
 		E9EC72021B25D9A900C4C905 /* BrowserStateModel.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC70C71B25D9A900C4C905 /* BrowserStateModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9EC72031B25D9A900C4C905 /* BrowserStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E9EC70C81B25D9A900C4C905 /* BrowserStateModel.m */; };
 		E9EC72061B25D9A900C4C905 /* NSArray+IterateAsyncSeries.h in Headers */ = {isa = PBXBuildFile; fileRef = E9EC70CC1B25D9A900C4C905 /* NSArray+IterateAsyncSeries.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -296,6 +323,44 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		291E692C217A2D8700216AF1 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		291E692D217A2D8800216AF1 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		291E692E217A2D8800216AF1 /* SSZipCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipCommon.h; sourceTree = "<group>"; };
+		291E6930217A2D8800216AF1 /* crypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crypt.c; sourceTree = "<group>"; };
+		291E6931217A2D8800216AF1 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		291E6932217A2D8800216AF1 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		291E6933217A2D8800216AF1 /* minishared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minishared.h; sourceTree = "<group>"; };
+		291E6934217A2D8800216AF1 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		291E6935217A2D8800216AF1 /* ioapi_mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi_mem.h; sourceTree = "<group>"; };
+		291E6936217A2D8800216AF1 /* ioapi_buf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi_buf.c; sourceTree = "<group>"; };
+		291E6937217A2D8800216AF1 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		291E6938217A2D8800216AF1 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		291E6939217A2D8800216AF1 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		291E693A217A2D8800216AF1 /* ioapi_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi_mem.c; sourceTree = "<group>"; };
+		291E693B217A2D8800216AF1 /* minishared.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minishared.c; sourceTree = "<group>"; };
+		291E693C217A2D8800216AF1 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		291E693D217A2D8800216AF1 /* ioapi_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi_buf.h; sourceTree = "<group>"; };
+		291E693F217A2D8800216AF1 /* prng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prng.h; sourceTree = "<group>"; };
+		291E6940217A2D8800216AF1 /* aes_ni.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_ni.h; sourceTree = "<group>"; };
+		291E6941217A2D8800216AF1 /* aeskey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aeskey.c; sourceTree = "<group>"; };
+		291E6942217A2D8800216AF1 /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
+		291E6943217A2D8800216AF1 /* aestab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aestab.h; sourceTree = "<group>"; };
+		291E6944217A2D8800216AF1 /* pwd2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwd2key.h; sourceTree = "<group>"; };
+		291E6945217A2D8800216AF1 /* aescrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aescrypt.c; sourceTree = "<group>"; };
+		291E6946217A2D8800216AF1 /* fileenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileenc.c; sourceTree = "<group>"; };
+		291E6947217A2D8800216AF1 /* aesopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aesopt.h; sourceTree = "<group>"; };
+		291E6948217A2D8800216AF1 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
+		291E6949217A2D8800216AF1 /* brg_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_types.h; sourceTree = "<group>"; };
+		291E694A217A2D8800216AF1 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		291E694B217A2D8800216AF1 /* aes_ni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes_ni.c; sourceTree = "<group>"; };
+		291E694C217A2D8800216AF1 /* brg_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_endian.h; sourceTree = "<group>"; };
+		291E694D217A2D8800216AF1 /* prng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prng.c; sourceTree = "<group>"; };
+		291E694E217A2D8800216AF1 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		291E694F217A2D8800216AF1 /* pwd2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pwd2key.c; sourceTree = "<group>"; };
+		291E6950217A2D8800216AF1 /* aestab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aestab.c; sourceTree = "<group>"; };
+		291E6951217A2D8800216AF1 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		291E6952217A2D8800216AF1 /* fileenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileenc.h; sourceTree = "<group>"; };
+		291E6953217A2D8800216AF1 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		69006ECD1CEB132E00ECF05E /* ProviderFindInPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProviderFindInPage.swift; sourceTree = "<group>"; };
 		69006EDD1CECB46200ECF05E /* EventDispatcher+WebNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventDispatcher+WebNavigation.swift"; sourceTree = "<group>"; };
 		69006EDF1CECCFE800ECF05E /* EventDispatcher+ContextMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventDispatcher+ContextMenu.swift"; sourceTree = "<group>"; };
@@ -566,17 +631,6 @@
 		E9EC704A1B25D99100C4C905 /* NSTimer+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Blocks.h"; sourceTree = "<group>"; };
 		E9EC704B1B25D99100C4C905 /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
 		E9EC704C1B25D99100C4C905 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		E9EC705A1B25D99100C4C905 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		E9EC705B1B25D99100C4C905 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		E9EC705C1B25D99100C4C905 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		E9EC705D1B25D99100C4C905 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		E9EC705E1B25D99100C4C905 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		E9EC705F1B25D99100C4C905 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		E9EC70601B25D99100C4C905 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		E9EC70611B25D99100C4C905 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		E9EC70621B25D99100C4C905 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		E9EC70631B25D99100C4C905 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
-		E9EC70641B25D99100C4C905 /* ZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ZipArchive.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E9EC70C71B25D9A900C4C905 /* BrowserStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BrowserStateModel.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		E9EC70C81B25D9A900C4C905 /* BrowserStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BrowserStateModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E9EC70CC1B25D9A900C4C905 /* NSArray+IterateAsyncSeries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+IterateAsyncSeries.h"; sourceTree = "<group>"; };
@@ -681,6 +735,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		291E692F217A2D8800216AF1 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				291E6930217A2D8800216AF1 /* crypt.c */,
+				291E6931217A2D8800216AF1 /* unzip.c */,
+				291E6932217A2D8800216AF1 /* zip.c */,
+				291E6933217A2D8800216AF1 /* minishared.h */,
+				291E6934217A2D8800216AF1 /* ioapi.c */,
+				291E6935217A2D8800216AF1 /* ioapi_mem.h */,
+				291E6936217A2D8800216AF1 /* ioapi_buf.c */,
+				291E6937217A2D8800216AF1 /* crypt.h */,
+				291E6938217A2D8800216AF1 /* zip.h */,
+				291E6939217A2D8800216AF1 /* unzip.h */,
+				291E693A217A2D8800216AF1 /* ioapi_mem.c */,
+				291E693B217A2D8800216AF1 /* minishared.c */,
+				291E693C217A2D8800216AF1 /* ioapi.h */,
+				291E693D217A2D8800216AF1 /* ioapi_buf.h */,
+				291E693E217A2D8800216AF1 /* aes */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		291E693E217A2D8800216AF1 /* aes */ = {
+			isa = PBXGroup;
+			children = (
+				291E693F217A2D8800216AF1 /* prng.h */,
+				291E6940217A2D8800216AF1 /* aes_ni.h */,
+				291E6941217A2D8800216AF1 /* aeskey.c */,
+				291E6942217A2D8800216AF1 /* hmac.c */,
+				291E6943217A2D8800216AF1 /* aestab.h */,
+				291E6944217A2D8800216AF1 /* pwd2key.h */,
+				291E6945217A2D8800216AF1 /* aescrypt.c */,
+				291E6946217A2D8800216AF1 /* fileenc.c */,
+				291E6947217A2D8800216AF1 /* aesopt.h */,
+				291E6948217A2D8800216AF1 /* sha1.c */,
+				291E6949217A2D8800216AF1 /* brg_types.h */,
+				291E694A217A2D8800216AF1 /* hmac.h */,
+				291E694B217A2D8800216AF1 /* aes_ni.c */,
+				291E694C217A2D8800216AF1 /* brg_endian.h */,
+				291E694D217A2D8800216AF1 /* prng.c */,
+				291E694E217A2D8800216AF1 /* aes.h */,
+				291E694F217A2D8800216AF1 /* pwd2key.c */,
+				291E6950217A2D8800216AF1 /* aestab.c */,
+				291E6951217A2D8800216AF1 /* sha1.h */,
+				291E6952217A2D8800216AF1 /* fileenc.h */,
+			);
+			path = aes;
+			sourceTree = "<group>";
+		};
 		69116A2C1CD8A77F005AD307 /* NativeInterface */ = {
 			isa = PBXGroup;
 			children = (
@@ -1014,27 +1117,13 @@
 		E9EC70581B25D99100C4C905 /* ZipArchive */ = {
 			isa = PBXGroup;
 			children = (
-				E9EC70591B25D99100C4C905 /* minizip */,
-				E9EC70631B25D99100C4C905 /* ZipArchive.h */,
-				E9EC70641B25D99100C4C905 /* ZipArchive.m */,
+				291E692F217A2D8800216AF1 /* minizip */,
+				291E692C217A2D8700216AF1 /* SSZipArchive.h */,
+				291E6953217A2D8800216AF1 /* SSZipArchive.m */,
+				291E692E217A2D8800216AF1 /* SSZipCommon.h */,
+				291E692D217A2D8800216AF1 /* ZipArchive.h */,
 			);
 			path = ZipArchive;
-			sourceTree = "<group>";
-		};
-		E9EC70591B25D99100C4C905 /* minizip */ = {
-			isa = PBXGroup;
-			children = (
-				E9EC705A1B25D99100C4C905 /* crypt.h */,
-				E9EC705B1B25D99100C4C905 /* ioapi.c */,
-				E9EC705C1B25D99100C4C905 /* ioapi.h */,
-				E9EC705D1B25D99100C4C905 /* mztools.c */,
-				E9EC705E1B25D99100C4C905 /* mztools.h */,
-				E9EC705F1B25D99100C4C905 /* unzip.c */,
-				E9EC70601B25D99100C4C905 /* unzip.h */,
-				E9EC70611B25D99100C4C905 /* zip.c */,
-				E9EC70621B25D99100C4C905 /* zip.h */,
-			);
-			path = minizip;
 			sourceTree = "<group>";
 		};
 		E9EC70991B25D9A900C4C905 /* Sources */ = {
@@ -1327,26 +1416,37 @@
 				6986C9511EDF89320037B1E8 /* ProtocolHandlerChromeExt.h in Headers */,
 				69B291241D018EEF003CEBBB /* BridgeEnums.h in Headers */,
 				E9E2B6651CD3AE5F00821A79 /* BrowserContextActionSheet.h in Headers */,
+				291E6964217A2D8800216AF1 /* ioapi_buf.h in Headers */,
 				E9C2E40D1CD348ED00EF57BF /* UIBAlertView.h in Headers */,
+				291E695A217A2D8800216AF1 /* minishared.h in Headers */,
+				291E6956217A2D8800216AF1 /* SSZipCommon.h in Headers */,
 				E9C2E4081CD347E500EF57BF /* UnpreventableUILongPressGestureRecognizer.h in Headers */,
 				691C931A1C4E81940043BB85 /* NSObject+Thread.h in Headers */,
 				E9EC72E31B25D9AA00C4C905 /* RuleCondition_BlockingResponse.h in Headers */,
 				E9EC72EB1B25D9AA00C4C905 /* RuleConditionGroup.h in Headers */,
 				E9EC72E71B25D9AA00C4C905 /* RuleCondition_DetailPath.h in Headers */,
 				E9EC72E91B25D9AA00C4C905 /* RuleCondition_UrlFilter.h in Headers */,
+				291E6977217A2D8800216AF1 /* sha1.h in Headers */,
 				E9EC72E51B25D9AA00C4C905 /* RuleCondition_ChromeGlob.h in Headers */,
 				E9EC72CF1B25D9AA00C4C905 /* RequestRule.h in Headers */,
 				E9CD449B1B25E9E4005662E0 /* KittCore.h in Headers */,
+				291E695E217A2D8800216AF1 /* crypt.h in Headers */,
 				E9EC72F31B25D9AA00C4C905 /* SAContentWebView.h in Headers */,
 				E9EC72581B25D9A900C4C905 /* BridgeSwitchboard.h in Headers */,
+				291E6972217A2D8800216AF1 /* brg_endian.h in Headers */,
 				E9CD44B91B26F1B2005662E0 /* Utils.h in Headers */,
 				697E63C61EEC00CA00ED9F9A /* UIImage+Transform.h in Headers */,
 				BB35378D1ECC9C86000901CE /* ExtensionViewDelegates.h in Headers */,
 				E9EC72181B25D9A900C4C905 /* NSString+PatternMatching.h in Headers */,
+				291E695C217A2D8800216AF1 /* ioapi_mem.h in Headers */,
 				E9EC72F91B25D9AA00C4C905 /* SAWebViewFaviconLoader.h in Headers */,
+				291E6970217A2D8800216AF1 /* hmac.h in Headers */,
+				291E6966217A2D8800216AF1 /* aes_ni.h in Headers */,
+				291E6963217A2D8800216AF1 /* ioapi.h in Headers */,
 				E9EC720E1B25D9A900C4C905 /* NSHTTPURLResponse+Uncacheable.h in Headers */,
 				697D027A1D2E8C85005DC610 /* XMLHTTPRequest.h in Headers */,
 				E9EC720A1B25D9A900C4C905 /* NSData+ChromeBundleParser.h in Headers */,
+				291E696D217A2D8800216AF1 /* aesopt.h in Headers */,
 				E9EC729C1B25D9AA00C4C905 /* BrowserStateCoreData.h in Headers */,
 				E9EC72021B25D9A900C4C905 /* BrowserStateModel.h in Headers */,
 				E9B3C8A91DFFFEFA00659016 /* ObjCLogger.h in Headers */,
@@ -1356,6 +1456,9 @@
 				E9EC72C51B25D9AA00C4C905 /* NetworkActivityObserver.h in Headers */,
 				E9EC72B11B25D9AA00C4C905 /* ReachabilityCentral.h in Headers */,
 				BB3537931ECC9C86000901CE /* ExtensionBackgroundContext.h in Headers */,
+				291E696F217A2D8800216AF1 /* brg_types.h in Headers */,
+				291E6978217A2D8800216AF1 /* fileenc.h in Headers */,
+				291E6954217A2D8800216AF1 /* SSZipArchive.h in Headers */,
 				E9EC72B51B25D9AA00C4C905 /* Settings.h in Headers */,
 				E9EC72EF1B25D9AA00C4C905 /* WebRequestEventDispatcher.h in Headers */,
 				BB3537971ECC9C86000901CE /* ExtensionUnpacker.h in Headers */,
@@ -1363,9 +1466,11 @@
 				E9EC70821B25D99100C4C905 /* NSTimer+Blocks.h in Headers */,
 				E9EC72061B25D9A900C4C905 /* NSArray+IterateAsyncSeries.h in Headers */,
 				E9EC72951B25D9AA00C4C905 /* PasteboardChecker.h in Headers */,
+				291E6965217A2D8800216AF1 /* prng.h in Headers */,
 				BB3537901ECC9C86000901CE /* ContextMenuItem.h in Headers */,
 				E9EC72C31B25D9AA00C4C905 /* NetworkActivityFilter.h in Headers */,
 				BB35377A1ECC9C70000901CE /* ExtensionModelEventDelegate.h in Headers */,
+				291E6974217A2D8800216AF1 /* aes.h in Headers */,
 				E9EC72C11B25D9AA00C4C905 /* DownloadProgressObserver.h in Headers */,
 				E9EC72FD1B25D9AA00C4C905 /* WebViewGesturesHandler.h in Headers */,
 				697D027E1D2EA664005DC610 /* NSObject+AddWebRequestRules.h in Headers */,
@@ -1374,19 +1479,18 @@
 				E9EC72CB1B25D9AA00C4C905 /* ProtocolHandlerJSBridge.h in Headers */,
 				E9EC72F71B25D9AA00C4C905 /* SAWebView.h in Headers */,
 				E9EC72BF1B25D9AA00C4C905 /* ConnectionAuthenticator.h in Headers */,
+				291E6955217A2D8800216AF1 /* ZipArchive.h in Headers */,
 				E9EC72CD1B25D9AA00C4C905 /* RequestFilteringCache.h in Headers */,
+				291E696A217A2D8800216AF1 /* pwd2key.h in Headers */,
 				E9EC72AF1B25D9AA00C4C905 /* Reachability.h in Headers */,
+				291E695F217A2D8800216AF1 /* zip.h in Headers */,
 				E9320E4D1C45607A0001936F /* OnePasswordExtension.h in Headers */,
 				E9C268A81D92D9DC00A60B3B /* ConnectionDelegateSanitizer.h in Headers */,
+				291E6969217A2D8800216AF1 /* aestab.h in Headers */,
 				E9C690211BF5EFC200039D2A /* WebViewProtocolDelegate.h in Headers */,
-				E9EC70921B25D99100C4C905 /* mztools.h in Headers */,
-				E9EC70941B25D99100C4C905 /* unzip.h in Headers */,
 				BB3537991ECC9C86000901CE /* ContextMenuProvider.h in Headers */,
-				E9EC70961B25D99100C4C905 /* zip.h in Headers */,
-				E9EC708E1B25D99100C4C905 /* crypt.h in Headers */,
+				291E6960217A2D8800216AF1 /* unzip.h in Headers */,
 				BB35379C1ECC9C86000901CE /* BrowserPageSharingActivity.h in Headers */,
-				E9EC70901B25D99100C4C905 /* ioapi.h in Headers */,
-				E9EC70971B25D99100C4C905 /* ZipArchive.h in Headers */,
 				E9CD449D1B25EA4C005662E0 /* KittCore-Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1637,6 +1741,7 @@
 				BB9E73151C99B3E200A5E44B /* NSObject+JavaScriptContext.swift in Sources */,
 				E9EC72EC1B25D9AA00C4C905 /* RuleConditionGroup.m in Sources */,
 				69946DA31D37DA9000AAA5C2 /* EventListenerStorage.swift in Sources */,
+				291E6957217A2D8800216AF1 /* crypt.c in Sources */,
 				69935D481ED8535000D4A9F0 /* BackgroundWebView.swift in Sources */,
 				E9EC72B21B25D9AA00C4C905 /* ReachabilityCentral.m in Sources */,
 				BB3537921ECC9C86000901CE /* ContextMenuProvider.m in Sources */,
@@ -1646,11 +1751,13 @@
 				697EA97F1E3641B20028109D /* URL+KittCore.swift in Sources */,
 				69B291221D018E43003CEBBB /* BridgeCallback.swift in Sources */,
 				E9EC72E81B25D9AA00C4C905 /* RuleCondition_DetailPath.m in Sources */,
+				291E6968217A2D8800216AF1 /* hmac.c in Sources */,
 				E9EC72BA1B25D9AA00C4C905 /* Utils.m in Sources */,
 				E9EC720F1B25D9A900C4C905 /* NSHTTPURLResponse+Uncacheable.m in Sources */,
 				6935129B1B6666B20030212E /* ChromeTab.swift in Sources */,
 				692D65A51BFC81D20094A04A /* Chrome+Memory.swift in Sources */,
 				69006EE21CECD7B600ECF05E /* ChromeWebRequest.swift in Sources */,
+				291E6979217A2D8800216AF1 /* SSZipArchive.m in Sources */,
 				69A5944A1CFA30F000EEFF29 /* RuleActionOnBeforeRequest.swift in Sources */,
 				69116A401CD8A77F005AD307 /* KittCore.swift in Sources */,
 				69116A3C1CD8A77F005AD307 /* CommandDispatcher.swift in Sources */,
@@ -1662,6 +1769,7 @@
 				69935D4A1ED8767800D4A9F0 /* ExtensionBackgroundContext.swift in Sources */,
 				69006ECE1CEB132E00ECF05E /* ProviderFindInPage.swift in Sources */,
 				E9EC72C41B25D9AA00C4C905 /* NetworkActivityFilter.m in Sources */,
+				291E696E217A2D8800216AF1 /* sha1.c in Sources */,
 				69116A3F1CD8A77F005AD307 /* KittCore+WindowOpenClose.swift in Sources */,
 				E9EC72E41B25D9AA00C4C905 /* RuleCondition_BlockingResponse.m in Sources */,
 				E9EC721B1B25D9A900C4C905 /* NSURL+Conformance.m in Sources */,
@@ -1679,13 +1787,15 @@
 				69B291141CFF0F9D003CEBBB /* RuleActionFactory.swift in Sources */,
 				E9EC72FA1B25D9AA00C4C905 /* SAWebViewFaviconLoader.m in Sources */,
 				69B433FE1CE5CCEE008A0266 /* EventDispatcher+FulltextSearch.swift in Sources */,
-				E9EC70931B25D99100C4C905 /* unzip.c in Sources */,
+				291E696C217A2D8800216AF1 /* fileenc.c in Sources */,
 				E9E2B6661CD3AE5F00821A79 /* BrowserContextActionSheet.m in Sources */,
 				6926C9BE1DBE361500176756 /* FileSystemChromeStorage.swift in Sources */,
 				69006EE41CED0E2C00ECF05E /* ChromeBrowserAction.swift in Sources */,
 				6935129D1B6671500030212E /* ChromeWindow.swift in Sources */,
 				69E9F6DA1B29C08B00A43C86 /* MessageHandler.swift in Sources */,
 				E9D320601BDA7A6D00A0F0FE /* WebDownloadError.swift in Sources */,
+				291E6959217A2D8800216AF1 /* zip.c in Sources */,
+				291E695D217A2D8800216AF1 /* ioapi_buf.c in Sources */,
 				E9EC72C01B25D9AA00C4C905 /* ConnectionAuthenticator.m in Sources */,
 				69116A3A1CD8A77F005AD307 /* ChromeTabs.swift in Sources */,
 				BB35378E1ECC9C86000901CE /* BrowserExtension.swift in Sources */,
@@ -1694,22 +1804,24 @@
 				692D65A91BFC81F80094A04A /* ChromeTabEx.swift in Sources */,
 				E9EC72CC1B25D9AA00C4C905 /* ProtocolHandlerJSBridge.m in Sources */,
 				E96360DE1C15AE73009179F2 /* SharingIntentFactory.swift in Sources */,
+				291E6973217A2D8800216AF1 /* prng.c in Sources */,
 				69116A381CD8A77F005AD307 /* ChromeRuntime.swift in Sources */,
 				E96360E01C15B048009179F2 /* SharingURLItemProvider.swift in Sources */,
 				E9C0628A1B3C07410041F6D9 /* Extensions.xcdatamodeld in Sources */,
 				69116A421CD8A77F005AD307 /* StandardHandler.swift in Sources */,
 				697E63C71EEC00CA00ED9F9A /* UIImage+Transform.m in Sources */,
+				291E6975217A2D8800216AF1 /* pwd2key.c in Sources */,
 				E9C2E49B1CD381C400EF57BF /* LocalizationResources.swift in Sources */,
 				BB3537941ECC9C86000901CE /* ExtensionBackgroundContext.m in Sources */,
 				E9D58E0E1BD7ABEA00A7E3E2 /* SaveableWebLink.swift in Sources */,
 				69A594481CFA30DD00EEFF29 /* RuleActionOnHeadersReceived.swift in Sources */,
+				291E6967217A2D8800216AF1 /* aeskey.c in Sources */,
 				69D72E4D1ECC9855005E9983 /* ContentWebView.swift in Sources */,
 				6954FB4F1BF62A3B00533D0A /* URLProtocolWithCookies.swift in Sources */,
 				E9320E451C4530590001936F /* PasswordMgrItemProvider.swift in Sources */,
 				6986C9541EDF8A390037B1E8 /* ProtocolHandlerChromeExt.m in Sources */,
 				E98DB5F31D894CD800FF345E /* TabIdCodec.swift in Sources */,
 				E9EC72F01B25D9AA00C4C905 /* WebRequestEventDispatcher.m in Sources */,
-				E9EC708F1B25D99100C4C905 /* ioapi.c in Sources */,
 				BBB4E4E11C58F16B00500091 /* ProtocolHandler.swift in Sources */,
 				690E94661CFC7E0200DD19C9 /* Bookmark.swift in Sources */,
 				69F6F3321B6A191E00758657 /* ChromeWindowData.swift in Sources */,
@@ -1726,10 +1838,12 @@
 				BB3537911ECC9C86000901CE /* ContextMenuItem.m in Sources */,
 				E9EC72C21B25D9AA00C4C905 /* DownloadProgressObserver.m in Sources */,
 				E9EC72C61B25D9AA00C4C905 /* NetworkActivityObserver.m in Sources */,
+				291E6971217A2D8800216AF1 /* aes_ni.c in Sources */,
 				E9EC72591B25D9A900C4C905 /* BridgeSwitchboard.m in Sources */,
 				69116A461CD8A9A8005AD307 /* JSInjectorReporter.swift in Sources */,
 				6986C9481EDEEE5B0037B1E8 /* SABackgroundWebView.swift in Sources */,
 				69116A391CD8A77F005AD307 /* ChromeStorageArea.swift in Sources */,
+				291E696B217A2D8800216AF1 /* aescrypt.c in Sources */,
 				E9EC72111B25D9A900C4C905 /* NSJSONSerialization+NSString.m in Sources */,
 				E9320E571C46ACF30001936F /* TitleTextItemProvider.swift in Sources */,
 				69A5944E1CFA504E00EEFF29 /* RuleActionRedirectRequest.swift in Sources */,
@@ -1740,12 +1854,12 @@
 				69F6F3311B6A191E00758657 /* ChromeTabData.swift in Sources */,
 				BBB20B4A1CD213280048B14F /* AutofillRegexConstants.swift in Sources */,
 				693F12411C87519000816DDE /* ProviderHistory.swift in Sources */,
+				291E6976217A2D8800216AF1 /* aestab.c in Sources */,
 				690E94641CFC7E0200DD19C9 /* UrlIcon.swift in Sources */,
 				690E946A1CFC7E0200DD19C9 /* OmniboxQuery.swift in Sources */,
 				E9B3C8B21E003A1B00659016 /* ChromeStorageError.swift in Sources */,
 				69B291121CFF0922003CEBBB /* AbstractRuleAction.swift in Sources */,
 				BB35379B1ECC9C86000901CE /* ContentScript.swift in Sources */,
-				E9EC70911B25D99100C4C905 /* mztools.c in Sources */,
 				E9EC72831B25D9AA00C4C905 /* JSInjectorReporter.m in Sources */,
 				69B2911D1D00523E003CEBBB /* Weak.swift in Sources */,
 				6970EC521B8355AF00FBC557 /* BookmarkExtras.swift in Sources */,
@@ -1758,16 +1872,17 @@
 				E9B47DB11C04C53F000E0E93 /* String+Encoding.swift in Sources */,
 				E9EC72EA1B25D9AA00C4C905 /* RuleCondition_UrlFilter.m in Sources */,
 				69116A481CD8A9EE005AD307 /* Result.swift in Sources */,
-				E9EC70981B25D99100C4C905 /* ZipArchive.m in Sources */,
 				BBB20B4E1CD22BB20048B14F /* AutofillProfile.swift in Sources */,
 				69C7AF381E2E7EA7002C78E8 /* IgnorableError.swift in Sources */,
 				E9EC720B1B25D9A900C4C905 /* NSData+ChromeBundleParser.m in Sources */,
+				291E6958217A2D8800216AF1 /* unzip.c in Sources */,
+				291E6962217A2D8800216AF1 /* minishared.c in Sources */,
+				291E6961217A2D8800216AF1 /* ioapi_mem.c in Sources */,
 				69E583701C7B14F60013C527 /* SAWebViewFaviconLoader.swift in Sources */,
 				E9EC72CE1B25D9AA00C4C905 /* RequestFilteringCache.m in Sources */,
 				690E94701CFC847900DD19C9 /* Extension.swift in Sources */,
 				6986C9531EDF895B0037B1E8 /* ProtocolHandlerChromeExt.swift in Sources */,
 				E9EC72F81B25D9AA00C4C905 /* SAWebView.m in Sources */,
-				E9EC70951B25D99100C4C905 /* zip.c in Sources */,
 				69116A4A1CD8AA88005AD307 /* NSError+KittCore.swift in Sources */,
 				E9B3C8A61DFFFED200659016 /* KittCoreLogger.swift in Sources */,
 				E9C2E4091CD347E500EF57BF /* UnpreventableUILongPressGestureRecognizer.m in Sources */,
@@ -1801,6 +1916,7 @@
 				690E946C1CFC7E0200DD19C9 /* TabHistoryItem.swift in Sources */,
 				69D72E4B1ECC9801005E9983 /* CacheResolver.swift in Sources */,
 				E9EC72B01B25D9AA00C4C905 /* Reachability.m in Sources */,
+				291E695B217A2D8800216AF1 /* ioapi.c in Sources */,
 				696C016A1F3B07020030E907 /* SAContentWebView+Cookies.swift in Sources */,
 				690E946E1CFC834A00DD19C9 /* ExtensionStorage.swift in Sources */,
 				E521F866201EACF2000EB1B8 /* KittLoggingFormatter.swift in Sources */,
