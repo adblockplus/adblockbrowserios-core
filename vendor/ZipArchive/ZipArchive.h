@@ -1,44 +1,19 @@
 //
 //  ZipArchive.h
-//  
+//  ZipArchive
 //
-//  Created by aish on 08-9-11.
-//  acsolu@gmail.com
-//  Copyright 2008  Inc. All rights reserved.
+//  Created by Serhii Mumriak on 12/1/15.
+//  Copyright © 2015 smumryak. All rights reserved.
 //
-// History: 
-//    09-11-2008 version 1.0    release
-//    10-18-2009 version 1.1    support password protected zip files
-//    10-21-2009 version 1.2    fix date bug
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-#include "minizip/zip.h"
-#include "minizip/unzip.h"
+//! Project version number for ZipArchive.
+FOUNDATION_EXPORT double ZipArchiveVersionNumber;
 
-@protocol ZipArchiveDelegate <NSObject>
-@optional
--(void) ErrorMessage:(NSString*) msg;
--(BOOL) OverWriteOperation:(NSString*) file;
+//! Project version string for ZipArchive.
+FOUNDATION_EXPORT const unsigned char ZipArchiveVersionString[];
 
-@end
+// In this header, you should import all the public headers of your framework using statements like #import <ZipArchive/SSZipArchive.h>
 
-@interface ZipArchive : NSObject {
-@private
-	zipFile		_zipFile;
-	unzFile		_unzFile;
-	NSString*   _password;
-}
-
-@property (nonatomic, retain) id<ZipArchiveDelegate> delegate;
-
--(BOOL) CreateZipFile2:(NSString*) zipFile;
--(BOOL) CreateZipFile2:(NSString*) zipFile Password:(NSString*) password;
--(BOOL) addFileToZip:(NSString*) file newname:(NSString*) newname;
--(BOOL) CloseZipFile2;
-
--(BOOL) UnzipOpenFile:(NSString*) zipFile;
--(BOOL) UnzipOpenFile:(NSString*) zipFile Password:(NSString*) password;
--(BOOL) UnzipFileTo:(NSString*) path overWrite:(BOOL) overwrite;
--(BOOL) UnzipCloseFile;
-@end
+#import "SSZipArchive.h"

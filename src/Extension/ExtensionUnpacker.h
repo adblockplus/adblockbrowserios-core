@@ -61,7 +61,7 @@
 /// @param bundle data as received from server
 /// @param extensionId
 /// @param error [out] any error occured during the unpacking
-- (void)unpackBundleData:(NSData *)data
+- (BOOL)unpackBundleData:(NSData *)data
          asExtensionOfId:(NSString *)extensionId
                    error:(NSError **)error;
 
