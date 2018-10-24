@@ -81,10 +81,12 @@
         [Utils error:error wrapping:nil message:@"Can't create tempfile, out of memory?"];
         return NO;
     }
+
     NSString *folder = [self pathForExtensionId:extensionId resource:nil error:error];
     if (*error) {
         return NO;
     }
+
     NSError *unzipError = nil;
     if (![SSZipArchive unzipFileAtPath:_tempZipFilePath
                          toDestination:folder
@@ -94,7 +96,15 @@
         [Utils error:error wrapping:nil message:[unzipError localizedDescription]];
         return NO;
     }
-    [[NSFileManager defaultManager] removeItemAtPath:_tempZipFilePath error:error];
+
+    NSError *deletionError = nil;
+    if (![[NSFileManager defaultManager] removeItemAtPath:_tempZipFilePath error:&deletionError]) {
+        [Utils error:error
+            wrapping:nil
+             message:[deletionError localizedDescription]];
+        return NO;
+    }
+
     return YES;
 }
 
