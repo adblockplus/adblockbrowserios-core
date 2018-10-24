@@ -181,6 +181,10 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
                                  error:(NSError *__autoreleasing *)error
 {
     [_bundleUnpacker deleteUnpackedExtensionOfId:extensionId error:error];
+    if (*error) {
+        return NO;
+    }
+
     if (!persist) {
         Extension *extension = [_persistence extensionObjectWithId:extensionId];
         if (extension) {
@@ -188,7 +192,8 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
             return YES;
         }
     }
-    return NO;
+
+    return YES;
 }
 
 - (void)removeExtension:(BrowserExtension *)extension

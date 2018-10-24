@@ -72,6 +72,11 @@ static NSDictionary *menuContextTypeMapping;
     if (!*error) {
         [self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error];
     }
+
+    if (*error) {
+        return NO;
+    }
+
     NSArray *contextsRaw = properties[KEY_CONTEXTS];
     if (contextsRaw && ([contextsRaw count] > 0)) {
         NSMutableArray *contextsMutable = [NSMutableArray arrayWithCapacity:[contextsRaw count]];
@@ -85,6 +90,7 @@ static NSDictionary *menuContextTypeMapping;
         }
         contexts = [NSArray arrayWithArray:contextsMutable];
     }
+
     return YES;
 }
 
@@ -103,7 +109,7 @@ static NSDictionary *menuContextTypeMapping;
             [self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error];
         }
         if (*error) {
-            break;
+            return NO;
         }
     }
     return YES;

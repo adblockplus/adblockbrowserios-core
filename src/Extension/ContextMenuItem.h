@@ -37,11 +37,11 @@ typedef enum {
 
 /// Set properties on menu item creation (coming from API command 'create')
 /// @param error [out] set if parameters preprocessing failed
-- (void)setInitialProperties:(NSDictionary *)properties error:(NSError **)error;
+- (BOOL)setInitialProperties:(NSDictionary *)properties error:(NSError **)error;
 
 /// Update properties (coming from API command 'update')
 /// @param error [out] set if parameters preprocessing failed
-- (void)mergeWithProperties:(NSDictionary *)properties error:(NSError **)error;
+- (BOOL)mergeWithProperties:(NSDictionary *)properties error:(NSError **)error;
 
 /// getters for relevant context menu properties. May expand over the time
 - (NSArray *)arrayOfRegexesForDocumentURL;

@@ -23,7 +23,7 @@
 @protocol ExtensionModelDataSource <NSObject>
 - (NSUInteger)extensionCount;
 - (BrowserExtension *)extensionAtIndex:(NSInteger)idx;
-- (void)removeExtensionAtIndex:(NSInteger)idx error:(NSError **)error;
+- (BOOL)removeExtensionAtIndex:(NSInteger)idx error:(NSError **)error;
 @end
 
 /// GUI for showing list of extensions
