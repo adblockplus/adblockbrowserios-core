@@ -74,7 +74,7 @@ static NSDictionary *menuContextTypeMapping;
     }
 
     if (*error) {
-        return NO;
+        [Utils error:error wrapping:nil message:@"Error converting strings to regex"];
     }
 
     NSArray *contextsRaw = properties[KEY_CONTEXTS];
@@ -109,7 +109,7 @@ static NSDictionary *menuContextTypeMapping;
             [self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error];
         }
         if (*error) {
-            return NO;
+            [Utils error:error wrapping:nil message:@"Error converting strings to regex"];
         }
     }
     return YES;

@@ -182,14 +182,13 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
 {
     [_bundleUnpacker deleteUnpackedExtensionOfId:extensionId error:error];
     if (*error) {
-        return NO;
+        [Utils error:error wrapping:nil message:@"There was an error when attempting to delete the extension"];
     }
 
     if (!persist) {
         Extension *extension = [_persistence extensionObjectWithId:extensionId];
         if (extension) {
             [_persistence deleteManagedObjects:@[ extension ]];
-            return YES;
         }
     }
 
