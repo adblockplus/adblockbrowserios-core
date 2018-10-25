@@ -738,21 +738,21 @@
 		291E692F217A2D8800216AF1 /* minizip */ = {
 			isa = PBXGroup;
 			children = (
-				291E6930217A2D8800216AF1 /* crypt.c */,
-				291E6931217A2D8800216AF1 /* unzip.c */,
-				291E6932217A2D8800216AF1 /* zip.c */,
-				291E6933217A2D8800216AF1 /* minishared.h */,
-				291E6934217A2D8800216AF1 /* ioapi.c */,
-				291E6935217A2D8800216AF1 /* ioapi_mem.h */,
-				291E6936217A2D8800216AF1 /* ioapi_buf.c */,
-				291E6937217A2D8800216AF1 /* crypt.h */,
-				291E6938217A2D8800216AF1 /* zip.h */,
-				291E6939217A2D8800216AF1 /* unzip.h */,
-				291E693A217A2D8800216AF1 /* ioapi_mem.c */,
-				291E693B217A2D8800216AF1 /* minishared.c */,
-				291E693C217A2D8800216AF1 /* ioapi.h */,
-				291E693D217A2D8800216AF1 /* ioapi_buf.h */,
 				291E693E217A2D8800216AF1 /* aes */,
+				291E6930217A2D8800216AF1 /* crypt.c */,
+				291E6937217A2D8800216AF1 /* crypt.h */,
+				291E6936217A2D8800216AF1 /* ioapi_buf.c */,
+				291E693D217A2D8800216AF1 /* ioapi_buf.h */,
+				291E693A217A2D8800216AF1 /* ioapi_mem.c */,
+				291E6935217A2D8800216AF1 /* ioapi_mem.h */,
+				291E6934217A2D8800216AF1 /* ioapi.c */,
+				291E693C217A2D8800216AF1 /* ioapi.h */,
+				291E693B217A2D8800216AF1 /* minishared.c */,
+				291E6933217A2D8800216AF1 /* minishared.h */,
+				291E6931217A2D8800216AF1 /* unzip.c */,
+				291E6939217A2D8800216AF1 /* unzip.h */,
+				291E6932217A2D8800216AF1 /* zip.c */,
+				291E6938217A2D8800216AF1 /* zip.h */,
 			);
 			path = minizip;
 			sourceTree = "<group>";
@@ -1093,12 +1093,12 @@
 		E9EC70261B25D99100C4C905 /* vendor */ = {
 			isa = PBXGroup;
 			children = (
+				E9320E461C45607A0001936F /* 1Password */,
 				E99AC1571D212D8D00F8CAC6 /* Chromium */,
+				E9EC70491B25D99100C4C905 /* NSTimer-Blocks */,
 				E9C2E40A1CD348ED00EF57BF /* UIBAlertView */,
 				E9C2E4061CD347E500EF57BF /* UnpreventableUILongPressGestureRecognizer.h */,
 				E9C2E4071CD347E500EF57BF /* UnpreventableUILongPressGestureRecognizer.m */,
-				E9320E461C45607A0001936F /* 1Password */,
-				E9EC70491B25D99100C4C905 /* NSTimer-Blocks */,
 				E9EC70581B25D99100C4C905 /* ZipArchive */,
 			);
 			path = vendor;
