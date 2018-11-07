@@ -173,6 +173,9 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
     }
     [self removeExtension:extension];
     [self removeExtensionSupportDataById:extension.extensionId persistData:NO error:error];
+    if (*error) {
+        [Utils error:error wrapping:nil message:@"Error removing extension support data"];
+    }
     return YES;
 }
 
