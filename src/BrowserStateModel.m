@@ -386,23 +386,31 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
                                                error:(NSError *__autoreleasing *)error
 {
     NSError *localErr = nil;
-    // try unpacking the bundle
-    [_bundleUnpacker unpackBundleData:data asExtensionOfId:extensionId error:&localErr];
+    // try unpacking the bundle.
+    // Continue when returning YES. If NO, don't step in.
+    if ([_bundleUnpacker unpackBundleData:data
+                          asExtensionOfId:extensionId
+                                    error:&localErr] == YES) {
+
+        // create the extension
+        BrowserExtension *extension = [self createExtensionWithId:extensionId error:&localErr];
+        if (localErr) {
+            [Utils error:error wrapping:localErr message:@"Failed unpacking"];
+            return nil;
+        } else {
+            [_extensions addObject:extension];
+            extension.enabled = YES;
+            [self callDelegatesWithEvent:@selector(onModelExtensionAdded:) andParameter:extension];
+            return extension;
+        }
+    }
+
+    // Check if |bundleUnpacker| returned an error when returning NO.
     if (localErr) {
         [Utils error:error wrapping:localErr message:@"Failed unpacking"];
-        return nil;
     }
-    // create the extension
-    BrowserExtension *extension = [self createExtensionWithId:extensionId error:&localErr];
-    if (localErr) {
-        [Utils error:error wrapping:localErr message:@"Failed unpacking"];
-        return nil;
-    } else {
-        [_extensions addObject:extension];
-        extension.enabled = YES;
-        [self callDelegatesWithEvent:@selector(onModelExtensionAdded:) andParameter:extension];
-        return extension;
-    }
+
+    return nil;
 }
 
 - (BrowserExtension *)createExtensionWithId:(NSString *)extensionId error:(NSError *__autoreleasing *)error
