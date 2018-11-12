@@ -144,15 +144,10 @@
 {
     NSString *path = [self pathForExtensionId:extensionId error:error];
     if (*error) {
-        [Utils error:error wrapping:nil message:@"Unable to determine path for extension ID: %@", extensionId];
+        // Error: Unable to determine path for extension ID.
         return NO;
     }
-
-    [[NSFileManager defaultManager] removeItemAtPath:path error:error];
-    if (*error) {
-        [Utils error:error wrapping:nil message:@"Unable to remove item at path: %@", _tempZipFilePath];
-    }
-    return YES;
+    return [[NSFileManager defaultManager] removeItemAtPath:path error:error];
 }
 
 - (BOOL)hasExtensionOfId:(NSString *)extensionId

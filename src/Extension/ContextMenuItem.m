@@ -68,13 +68,12 @@ static NSDictionary *menuContextTypeMapping;
 {
     // deep mutable copy
     _properties = [NSMutableDictionary dictionaryWithDictionary:properties];
-    [self exchangeStringsForRegexesInPropertyForKey:KEY_TARGET_URLS error:error];
-    if (!*error) {
-        [self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error];
-    }
 
-    if (*error) {
-        [Utils error:error wrapping:nil message:@"Error converting strings to regex"];
+    if ([self exchangeStringsForRegexesInPropertyForKey:KEY_TARGET_URLS error:error] == NO) {
+        return NO;
+    }
+    if ([self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error] == NO) {
+        return NO;
     }
 
     NSArray *contextsRaw = properties[KEY_CONTEXTS];
@@ -104,12 +103,13 @@ static NSDictionary *menuContextTypeMapping;
     for (NSString *updateKey in mergeDict) {
         [_properties setObject:[mergeDict objectForKey:updateKey] forKey:updateKey];
         if ([updateKey isEqualToString:KEY_TARGET_URLS]) {
-            [self exchangeStringsForRegexesInPropertyForKey:KEY_TARGET_URLS error:error];
+            if ([self exchangeStringsForRegexesInPropertyForKey:KEY_TARGET_URLS error:error] == NO) {
+                return NO;
+            }
         } else if ([updateKey isEqualToString:KEY_DOCUMENT_URLS]) {
-            [self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error];
-        }
-        if (*error) {
-            [Utils error:error wrapping:nil message:@"Error converting strings to regex"];
+            if ([self exchangeStringsForRegexesInPropertyForKey:KEY_DOCUMENT_URLS error:error] == NO) {
+                return NO;
+            }
         }
     }
     return YES;

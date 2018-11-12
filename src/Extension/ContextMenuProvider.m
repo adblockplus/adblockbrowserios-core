@@ -232,16 +232,19 @@
     ContextMenuItem *menuItem = [[ContextMenuItem alloc] initWithMenuId:createMenuId
                                                         originExtension:extension];
     NSError *err = nil;
-    [menuItem setInitialProperties:properties error:&err];
-    if (err) {
-        UIAlertView *alert = [Utils alertViewWithError:err
-                                                 title:[NSString stringWithFormat:@"%@: create context menu", extension.manifest.name]
-                                              delegate:nil];
-        [alert show];
+
+    if ([menuItem setInitialProperties:properties error:&err] == YES) {
+        [_registeredMenuItems addObject:menuItem];
+        [self updateEditingMenuItems];
+    } else {
+        if (err) {
+            UIAlertView *alert = [Utils alertViewWithError:err
+                                                     title:[NSString stringWithFormat:@"%@: create context menu", extension.manifest.name]
+                                                  delegate:nil];
+            [alert show];
+        }
         return;
     }
-    [_registeredMenuItems addObject:menuItem];
-    [self updateEditingMenuItems];
 }
 
 - (void)onContextMenuUpdateId:(NSString *)updateMenuId
@@ -254,15 +257,18 @@
     }
     ContextMenuItem *menuItem = [_registeredMenuItems objectAtIndex:idx];
     NSError *err = nil;
-    [menuItem mergeWithProperties:properties error:&err];
-    if (err) {
-        UIAlertView *alert = [Utils alertViewWithError:err
-                                                 title:[NSString stringWithFormat:@"Update context menu %@", updateMenuId]
-                                              delegate:nil];
-        [alert show];
+
+    if ([menuItem mergeWithProperties:properties error:&err] == YES) {
+        [self updateEditingMenuItems];
+    } else {
+        if (err) {
+            UIAlertView *alert = [Utils alertViewWithError:err
+                                                     title:[NSString stringWithFormat:@"Update context menu %@", updateMenuId]
+                                                  delegate:nil];
+            [alert show];
+        }
         return;
     }
-    [self updateEditingMenuItems];
 }
 
 - (void)onContextMenuRemoveId:(NSString *)removeMenuId

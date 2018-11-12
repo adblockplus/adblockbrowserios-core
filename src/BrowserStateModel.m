@@ -172,20 +172,15 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
         return NO;
     }
     [self removeExtension:extension];
-    [self removeExtensionSupportDataById:extension.extensionId persistData:NO error:error];
-    if (*error) {
-        [Utils error:error wrapping:nil message:@"Error removing extension support data"];
-    }
-    return YES;
+    return [self removeExtensionSupportDataById:extension.extensionId persistData:NO error:error];
 }
 
 - (BOOL)removeExtensionSupportDataById:(NSString *)extensionId
                            persistData:(BOOL)persist
                                  error:(NSError *__autoreleasing *)error
 {
-    [_bundleUnpacker deleteUnpackedExtensionOfId:extensionId error:error];
-    if (*error) {
-        [Utils error:error wrapping:nil message:@"There was an error when attempting to delete the extension"];
+    if ([_bundleUnpacker deleteUnpackedExtensionOfId:extensionId error:error] == NO) {
+        return NO;
     }
 
     if (!persist) {
@@ -466,7 +461,13 @@ static NSDictionary<NSNumber *, NSString *> *transitionQualifierMapping;
         [Utils error:error wrapping:nil message:@"Cannot configure '%@', id invalid", extensionId];
         return NO;
     }
+
     [extension.storage merge:keysAndValues error:error];
+    if (*error) {
+        // Merge failed.
+        return NO;
+    }
+
     return YES;
 }
 
