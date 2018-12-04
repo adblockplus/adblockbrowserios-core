@@ -7,6 +7,7 @@ The core module that powers Adblock Browser for iOS.
 ### Requirements
 
 - [Xcode 9 or later](https://developer.apple.com/xcode/)
+- [npm](https://www.npmjs.com/get-npm)
 - [SwiftLint](https://github.com/realm/SwiftLint/) (optional)
 
 ### Building Instructions
