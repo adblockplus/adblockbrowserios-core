@@ -101,7 +101,10 @@ static NSString *const DB_NAME = @"BrowserState.sqlite";
 - (BOOL)setUpStoreWithMigration:(BOOL)tryMigration error:(NSError *__autoreleasing *)error
 {
     // Get the current model, merging all the models in the main bundle (in their current version)
-    NSBundle *coreBundle = [Settings coreBundle];
+    NSString* mainBundlePath = [[NSBundle mainBundle] resourcePath];
+    NSString* frameworkBundlePath = [mainBundlePath stringByAppendingPathComponent:@"KittCoreBundle.bundle"];
+    NSBundle *coreBundle = [NSBundle bundleWithPath:frameworkBundlePath];
+//    NSBundle *coreBundle = [Settings coreBundle];
     NSManagedObjectModel *destinationModel = [NSManagedObjectModel mergedModelFromBundles:@[ coreBundle ]];
     if (tryMigration) {
         NSDictionary *migrationMetadata = [self metadataIfMigrationNeeded:_storeFileURL destinationModel:destinationModel error:error];
