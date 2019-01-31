@@ -346,17 +346,25 @@ static NSUInteger _staticSubFrameIdentifier = 1;
 
 #pragma mark - WebViewProtocol
 
-- (NSURL *)URL
-{
-    return self.request.mainDocumentURL;
-}
+//- (NSURL *)URL
+//{
+//    return self.URL;
+//}
 
-- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler
-{
-    NSString *result = [self stringByEvaluatingJavaScriptFromString:javaScriptString];
-    if (completionHandler) {
-        completionHandler(result, nil);
-    }
-}
+//- (void)evaluateJS:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler
+//{
+//    [self evaluateJavaScript:javaScriptString completionHandler:^(id _Nullable result, NSError * _Nullable evalError) {
+//        if (evalError) {
+//            if (completionHandler) {
+//                completionHandler(nil, evalError);
+//            }
+//        } else {
+//            NSString *resultString = [NSString stringWithFormat:@"%@", result];
+//            if (completionHandler) {
+//                completionHandler(resultString, nil);
+//            }
+//        }
+//    }];
+//}
 
 @end

@@ -345,95 +345,111 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
     }
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - WKNavigationDelegate
 
-- (BOOL)webView:(UIWebView *)sender shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSAssert([sender isKindOfClass:[SAContentWebView class]], @"NetworkActivityObserver shouldStartLoadWithRequest not with SAContentWebView");
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+    decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+
+    NSAssert([webView isKindOfClass:[SAContentWebView class]], @"NetworkActivityObserver shouldStartLoadWithRequest not with SAContentWebView");
     // It would be naturally expected that sender.request holds the "previous URL",
     // hence being a comparison source. Unfortunately, UIWebView has its own idea of
     // assignment timing and sender.request very often reports an even older URL
     // even if didStartLoad was already called with the "last previous URL".
     // Safer approach is to ask our override for what it registers as the last known URL.
-    SAContentWebView *senderContentWebView = (SAContentWebView *)sender;
+    SAContentWebView *senderContentWebView = (SAContentWebView *)webView;
     NSURL *nonFragmentURL = nil;
-    if (request.URL.fragment) {
-        NSURLComponents *components = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:NO];
+    if (navigationAction.request.URL.fragment) {
+        NSURLComponents *components = [NSURLComponents componentsWithURL:navigationAction.request.URL resolvingAgainstBaseURL:NO];
         components.fragment = nil;
         nonFragmentURL = components.URL;
 
         if ([nonFragmentURL isRFC2616EquivalentOf:senderContentWebView.currentURL]) {
             // fragment jump, no change in progress
-            return YES;
+            decisionHandler(WKNavigationActionPolicyAllow);
         };
     }
-    BOOL isTopLevelNavigation = [request.mainDocumentURL isEqual:request.URL];
 
+    BOOL isTopLevelNavigation = [navigationAction.request.mainDocumentURL isEqual:navigationAction.request.URL];
     BOOL isHTTP = NO;
-    isHTTP |= [[request.URL.scheme lowercaseString] isEqualToString:@"http"];
-    isHTTP |= [[request.URL.scheme lowercaseString] isEqualToString:@"https"];
+    isHTTP |= [[navigationAction.request.URL.scheme lowercaseString] isEqualToString:@"http"];
+    isHTTP |= [[navigationAction.request.URL.scheme lowercaseString] isEqualToString:@"https"];
 
-    if (isHTTP && isTopLevelNavigation && [sender conformsToProtocol:@protocol(NetworkActivityDelegate)]) {
+    if (isHTTP && isTopLevelNavigation && [webView conformsToProtocol:@protocol(NetworkActivityDelegate)]) {
         // Create associated object
-        DownloadProgressObserver *progress = objc_getAssociatedObject(sender, ProgressbarInfo);
+        DownloadProgressObserver *progress = objc_getAssociatedObject(webView, ProgressbarInfo);
 
         if (!progress) {
             progress = [[DownloadProgressObserver alloc] init];
-            objc_setAssociatedObject(sender, ProgressbarInfo, progress, OBJC_ASSOCIATION_RETAIN);
+            objc_setAssociatedObject(webView, ProgressbarInfo, progress, OBJC_ASSOCIATION_RETAIN);
         }
 
         @synchronized(progress)
         {
             [progress reset];
-            [progress startProgressWithURL:request.mainDocumentURL];
+            [progress startProgressWithURL:navigationAction.request.mainDocumentURL];
         }
     }
 
-    return YES;
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)sender
-{
-    [self tryTocompleteProcessOfWebView:sender];
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    // nothing here.
 }
 
-- (void)webView:(UIWebView *)sender didFailLoadWithError:(NSError *)error
-{
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [self tryTocompleteProcessOfWebView:webView];
+}
+
+- (void)webView:(WKWebView *)webView
+    didFailNavigation:(WKNavigation *)navigation
+            withError:(NSError *)error {
+
     switch ([error code]) {
-    // We do not know, what to do with those special types of error
-    // So I am suggesting to cancel progress bar loading.
-    case kCFURLErrorNotConnectedToInternet:
-    case kCFURLErrorNetworkConnectionLost: {
-        DownloadProgressObserver *progress = nil;
-        if ((progress = objc_getAssociatedObject(sender, ProgressbarInfo))) {
-            id<NetworkActivityDelegate> delegate = (id<NetworkActivityDelegate>)sender;
-            @synchronized(progress)
-            {
-                [progress reset];
-                [delegate onNetworkLoadingProgress:progress.currentProgress];
+            // We do not know, what to do with those special types of error
+            // So I am suggesting to cancel progress bar loading.
+        case kCFURLErrorNotConnectedToInternet:
+        case kCFURLErrorNetworkConnectionLost: {
+            DownloadProgressObserver *progress = nil;
+            if ((progress = objc_getAssociatedObject(webView, ProgressbarInfo))) {
+                id<NetworkActivityDelegate> delegate = (id<NetworkActivityDelegate>)webView;
+                @synchronized(progress)
+                {
+                    [progress reset];
+                    [delegate onNetworkLoadingProgress:progress.currentProgress];
+                }
             }
-        }
-    } break;
-    default:
-        [self tryTocompleteProcessOfWebView:sender];
-        break;
+        } break;
+        default:
+            [self tryTocompleteProcessOfWebView:webView];
+            break;
     }
+
 }
 
-- (void)tryTocompleteProcessOfWebView:(UIWebView *)sender
+- (void)tryTocompleteProcessOfWebView:(WKWebView *)sender
 {
     DownloadProgressObserver *progress = nil;
     if ((progress = objc_getAssociatedObject(sender, ProgressbarInfo))) {
         id<NetworkActivityDelegate> delegate = (id<NetworkActivityDelegate>)sender;
 
-        NSString *readyState;
+        __block NSString *readyState;
         if ([sender isKindOfClass:[SAContentWebView class]]) {
             readyState = [(id)sender readyState];
         } else {
-            readyState = [sender stringByEvaluatingJavaScriptFromString:@"document.readyState"];
+            [sender evaluateJavaScript:@"document.readyState"
+                     completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+                if (error) {
+                    NSLog(@"Error evaluating JS string: %@", [error localizedDescription]);
+                }
+
+                readyState = [NSString stringWithFormat:@"%@", result];
+            }];
         }
 
-        BOOL isNotRedirect = [progress.topLevelNavigationURL isEqual:sender.request.mainDocumentURL];
+        BOOL isNotRedirect = [progress.topLevelNavigationURL isEqual:sender.URL];
+//        BOOL isNotRedirect = [progress.topLevelNavigationURL isEqual:sender.request.mainDocumentURL];
         BOOL complete = [readyState isEqualToString:@"complete"];
         if (complete && isNotRedirect) {
             // Stop progress updating

@@ -47,7 +47,7 @@ final class SABackgroundWebView: SAWebView, BackgroundFacade {
         let extensionId = `extension`.extensionId
         let filename = BrowserExtension.generatedBackgroundPageFilename
         if let url = ProtocolHandlerChromeExt.url(forRequestResource: filename, extensionId: extensionId) {
-            loadRequest(URLRequest(url: url))
+            load(URLRequest(url: url))
         }
     }
 

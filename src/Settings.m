@@ -186,40 +186,54 @@ static NSBundle *_kittCoreBundle;
 /// When it was directly in constructor, it was invoking JS context creation too early
 + (NSString *)defaultWebViewUserAgent
 {
-    static NSString *defaultUIWebViewUserAgent;
+
+    return @"Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543 Safari/419.3";
+
+    static NSString *defaultWKWebViewUserAgent;
     static dispatch_once_t onceToken;
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
     dispatch_once(&onceToken, ^{
         // The following JS evaluation invokes JS context creation. It ends up in didCreateJSContext
         // listener which expects that the originating webview is known, i.e. registered with
         // SAWebViewManager. So a webview of the right type must be created and temporarily registered.
-        UIWebView *tempWebView = [[SAPopupWebView alloc] initWithFrame:CGRectZero];
-        defaultUIWebViewUserAgent = [tempWebView
-                                     stringByEvaluatingJavaScriptFromString:
-                                     @"window.navigator.userAgent"];
-        NSAssert(defaultUIWebViewUserAgent && defaultUIWebViewUserAgent.length > 0, @"Cannot determine default User-Agent");
-        NSString *safariVersion = @"600.1.4"; // default for iOS 8, oldest applicable version
-        NSError *err = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"AppleWebKit/([0-9.]+)"
-                                                                               options:0
-                                                                                 error:&err];
-        NSTextCheckingResult *match = [regex firstMatchInString:defaultUIWebViewUserAgent
-                                                        options:0
-                                                          range:NSMakeRange(0, [defaultUIWebViewUserAgent length])];
-        if (match) {
-            // iOS8+ _seems_ to be simply copying WebKit version to Safari version
-            // It can be absolutely found untrue with future iOS versions
-            safariVersion = [defaultUIWebViewUserAgent substringWithRange:[match rangeAtIndex:1]];
-        } else {
-            LogError(@"WebView userAgent does not contain AppleWebKit token");
-            // fallback to hardcoded versions
-            NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
-            if (GREATER_THAN_OR_EQUAL_TO(systemVersion, @"8.0")) {
-                safariVersion = @"601.1.4"; // iOS9+
-            }
-        }
-        defaultUIWebViewUserAgent = [NSString stringWithFormat:@"%@ Safari/%@", defaultUIWebViewUserAgent, safariVersion];
+        WKWebView *tempWebView = [[SAPopupWebView alloc] initWithFrame:CGRectZero];
+
+        [tempWebView evaluateJavaScript:@"window.navigator.userAgent"
+                      completionHandler:^(id _Nullable result, NSError * _Nullable evaluationError) {
+                          if (evaluationError) {
+                              NSLog(@"error evaluating JS: %@", [evaluationError localizedDescription]);
+                          }
+
+                          defaultWKWebViewUserAgent = [NSString stringWithFormat:@"%@", result];
+                          NSAssert(defaultWKWebViewUserAgent && defaultWKWebViewUserAgent.length > 0, @"Cannot determine default User-Agent");
+                          NSString *safariVersion = @"600.1.4"; // default for iOS 8, oldest applicable version
+                          NSError *err = nil;
+                          NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"AppleWebKit/([0-9.]+)"
+                                                                                                 options:0
+                                                                                                   error:&err];
+                          NSTextCheckingResult *match = [regex firstMatchInString:defaultWKWebViewUserAgent
+                                                                          options:0
+                                                                            range:NSMakeRange(0, [defaultWKWebViewUserAgent length])];
+                          if (match) {
+                              // iOS8+ _seems_ to be simply copying WebKit version to Safari version
+                              // It can be absolutely found untrue with future iOS versions
+                              safariVersion = [defaultWKWebViewUserAgent substringWithRange:[match rangeAtIndex:1]];
+                          } else {
+                              LogError(@"WebView userAgent does not contain AppleWebKit token");
+                              // fallback to hardcoded versions
+                              NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
+                              if (GREATER_THAN_OR_EQUAL_TO(systemVersion, @"8.0")) {
+                                  safariVersion = @"601.1.4"; // iOS9+
+                              }
+                          }
+                          defaultWKWebViewUserAgent = [NSString stringWithFormat:@"%@ Safari/%@", defaultWKWebViewUserAgent, safariVersion];
+
+                          dispatch_semaphore_signal(sem);
+                      }];
     });
-    return defaultUIWebViewUserAgent;
+
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    return defaultWKWebViewUserAgent;
 }
 
 + (NSString *)extensionServerScheme

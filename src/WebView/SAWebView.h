@@ -26,6 +26,7 @@
 #import "BridgeEnums.h"
 #import "WebViewFacade.h"
 @import JavaScriptCore;
+@import WebKit;
 
 /// A reflection of WebKit-private WebFrame, which cannot be used directly
 @protocol WebKitFrame <NSObject>
@@ -35,7 +36,7 @@
 
 @class KittFrame, BridgeSwitchboard;
 
-@interface SAWebView : UIWebView <WebViewFacade>
+@interface SAWebView : WKWebView <WebViewFacade>
 
 /// Can be called from any thread
 - (NSEnumerator *__nonnull)threadsafeKittFrames;

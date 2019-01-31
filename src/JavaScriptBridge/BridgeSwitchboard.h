@@ -22,10 +22,10 @@
 /// Delegate to control the Browser UI from within BridgeSwitchboard
 @protocol BrowserControlDelegate
 - (void)loadURL:(NSURL *)url;
-- (void)showNewTabWithURL:(NSURL *)url fromSource:(UIWebView *)source;
+- (void)showNewTabWithURL:(NSURL *)url fromSource:(WKWebView *)source;
 /// Incremental method to not break backward compatibility.
 /// For cases where originating frame is known and needed (like window.open call)
-- (void)showNewTabWithURL:(NSURL *)url fromSource:(UIWebView *)source fromFrame:(KittFrame *)frame;
+- (void)showNewTabWithURL:(NSURL *)url fromSource:(WKWebView *)source fromFrame:(KittFrame *)frame;
 @end
 
 /**

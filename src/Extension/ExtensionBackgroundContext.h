@@ -25,7 +25,7 @@
 
 @import WebKit;
 
-@interface ExtensionBackgroundContext : NSObject <UIWebViewDelegate, // catching url change requests
+@interface ExtensionBackgroundContext : NSObject <WKNavigationDelegate, // catching url change requests
                                             ExtensionModelEventDelegate // acting on extension changes
                                             >
 

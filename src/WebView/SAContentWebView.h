@@ -19,6 +19,7 @@
 #import "NetworkActivityObserver.h"
 #import "SAWebViewFaviconLoader.h"
 #import "WebViewProtocolDelegate.h"
+@import WebKit;
 
 /// https://developer.chrome.com/extensions/webNavigation#type-TransitionType
 typedef NS_ENUM(NSUInteger, WebNavigationTransitionType) {
@@ -70,7 +71,7 @@ typedef NS_ENUM(NSUInteger, WebNavigationTransitionQualifier) {
 /// Define a single composite delegate, so that SAContentWebView doesn't need
 /// two separate properties, while both are expected to be implemented by
 /// one target object
-@protocol ActiveContentViewDelegate <UIWebViewDelegate, NetworkActivityDelegate>
+@protocol ActiveContentViewDelegate <WKNavigationDelegate, NetworkActivityDelegate>
 
 @end
 

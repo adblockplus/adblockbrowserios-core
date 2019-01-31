@@ -16,6 +16,7 @@
  */
 
 #import <Foundation/Foundation.h>
+@import WebKit;
 
 @protocol NetworkActivityDelegate <NSObject>
 - (void)onNetworkLoadingProgress:(double)progress;
@@ -33,7 +34,7 @@ Thread safe.
 
 @todo resource loading progress computation per tab id
  */
-@interface NetworkActivityObserver : NSObject <UIWebViewDelegate>
+@interface NetworkActivityObserver : NSObject <WKNavigationDelegate>
 
 extern NSString *__nonnull const kNetworkActivityNotification;
 
@@ -63,7 +64,7 @@ extern NSString *__nonnull const kNetworkActivityNotification;
 - (void)connection:(NSURLConnection *__nonnull)connection receivedDataLength:(NSUInteger)length;
 - (void)unregisterConnection:(NSURLConnection *__nonnull)connection;
 
-- (void)tryTocompleteProcessOfWebView:(UIWebView *__nonnull)sender;
+- (void)tryTocompleteProcessOfWebView:(WKWebView *__nonnull)sender;
 
 - (void)onReadyStateDidChanged:(SAContentWebView *__nonnull)sender;
 

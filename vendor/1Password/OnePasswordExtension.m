@@ -204,30 +204,18 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 }
 
 #pragma mark - Web View filling Support
-
 - (void)fillItemIntoWebView:(nonnull id)webView forViewController:(nonnull UIViewController *)viewController sender:(nullable id)sender showOnlyLogins:(BOOL)yesOrNo completion:(nullable void (^)(BOOL success, NSError * __nullable error))completion {
 	NSAssert(webView != nil, @"webView must not be nil");
 	NSAssert(viewController != nil, @"viewController must not be nil");
-	NSAssert([webView isKindOfClass:[UIWebView class]] || [webView isKindOfClass:[WKWebView class]], @"webView must be an instance of WKWebView or UIWebView.");
+	NSAssert([webView isKindOfClass:[WKWebView class]], @"webView must be an instance of WKWebView.");
 
-#ifdef __IPHONE_8_0
-	if ([webView isKindOfClass:[UIWebView class]]) {
-		[self fillItemIntoUIWebView:webView webViewController:viewController sender:(id)sender showOnlyLogins:yesOrNo completion:^(BOOL success, NSError *error) {
-			if (completion) {
-				completion(success, error);
-			}
-		}];
-	}
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0 || ONE_PASSWORD_EXTENSION_ENABLE_WK_WEB_VIEW
-	else if ([webView isKindOfClass:[WKWebView class]]) {
+    if ([webView isKindOfClass:[WKWebView class]]) {
 		[self fillItemIntoWKWebView:webView forViewController:viewController sender:(id)sender showOnlyLogins:yesOrNo completion:^(BOOL success, NSError *error) {
 			if (completion) {
 				completion(success, error);
 			}
 		}];
 	}
-	#endif
-#endif
 }
 
 #pragma mark - Support for custom UIActivityViewControllers
@@ -238,17 +226,9 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 
 - (void)createExtensionItemForWebView:(nonnull id)webView completion:(void (^)(NSExtensionItem * __nullable extensionItem, NSError * __nullable error))completion {
 	NSAssert(webView != nil, @"webView must not be nil");
-	NSAssert([webView isKindOfClass:[UIWebView class]] || [webView isKindOfClass:[WKWebView class]], @"webView must be an instance of WKWebView or UIWebView.");
-	
-#ifdef __IPHONE_8_0
-	if ([webView isKindOfClass:[UIWebView class]]) {
-		UIWebView *uiWebView = (UIWebView *)webView;
-		NSString *collectedPageDetails = [uiWebView stringByEvaluatingJavaScriptFromString:OPWebViewCollectFieldsScript];
+	NSAssert([webView isKindOfClass:[WKWebView class]], @"webView must be an instance of WKWebView.");
 
-		[self createExtensionItemForURLString:uiWebView.request.URL.absoluteString webPageDetails:collectedPageDetails completion:completion];
-	}
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0 || ONE_PASSWORD_EXTENSION_ENABLE_WK_WEB_VIEW
-	else if ([webView isKindOfClass:[WKWebView class]]) {
+	if ([webView isKindOfClass:[WKWebView class]]) {
 		WKWebView *wkWebView = (WKWebView *)webView;
 		[wkWebView evaluateJavaScript:OPWebViewCollectFieldsScript completionHandler:^(NSString *result, NSError *evaluateError) {
 			if (result == nil) {
@@ -271,8 +251,6 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 			[self createExtensionItemForURLString:wkWebView.URL.absoluteString webPageDetails:result completion:completion];
 		}];
 	}
-	#endif
-#endif
 }
 
 - (void)fillReturnedItems:(nullable NSArray *)returnedItems intoWebView:(nonnull id)webView completion:(nullable void (^)(BOOL success, NSError * __nullable error))completion {
@@ -380,7 +358,6 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 	[forViewController presentViewController:activityViewController animated:YES completion:nil];
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0 || ONE_PASSWORD_EXTENSION_ENABLE_WK_WEB_VIEW
 - (void)fillItemIntoWKWebView:(nonnull WKWebView *)webView forViewController:(nonnull UIViewController *)viewController sender:(nullable id)sender showOnlyLogins:(BOOL)yesOrNo completion:(void (^)(BOOL success, NSError * __nullable error))completion {
 	[webView evaluateJavaScript:OPWebViewCollectFieldsScript completionHandler:^(NSString *result, NSError *error) {
 		if (result == nil) {
@@ -399,16 +376,6 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 		}];
 	}];
 }
-#endif
-
-- (void)fillItemIntoUIWebView:(nonnull UIWebView *)webView webViewController:(nonnull UIViewController *)viewController sender:(nullable id)sender showOnlyLogins:(BOOL)yesOrNo completion:(void (^)(BOOL success, NSError * __nullable error))completion {
-	NSString *collectedPageDetails = [webView stringByEvaluatingJavaScriptFromString:OPWebViewCollectFieldsScript];
-	[self findLoginIn1PasswordWithURLString:webView.request.URL.absoluteString collectedPageDetails:collectedPageDetails forWebViewController:viewController sender:sender withWebView:webView showOnlyLogins:yesOrNo completion:^(BOOL success, NSError *error) {
-		if (completion) {
-			completion(success, error);
-		}
-	}];
-}
 
 - (void)executeFillScript:(NSString * __nullable)fillScript inWebView:(nonnull id)webView completion:(void (^)(BOOL success, NSError * __nullable error))completion {
 
@@ -424,24 +391,7 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 	NSMutableString *scriptSource = [OPWebViewFillScript mutableCopy];
 	[scriptSource appendFormat:@"(document, %@, undefined);", fillScript];
 
-#ifdef __IPHONE_8_0
-	if ([webView isKindOfClass:[UIWebView class]]) {
-		NSString *result = [((UIWebView *)webView) stringByEvaluatingJavaScriptFromString:scriptSource];
-		BOOL success = (result != nil);
-		NSError *error = nil;
-
-		if (!success) {
-			NSLog(@"Cannot executeFillScript, stringByEvaluatingJavaScriptFromString failed");
-			error = [OnePasswordExtension failedToFillFieldsErrorWithLocalizedErrorMessage:NSLocalizedStringFromTable(@"Failed to fill web page because script could not be evaluated", @"OnePasswordExtension", @"1Password Extension Error Message") underlyingError:nil];
-		}
-
-		if (completion) {
-			completion(success, error);
-		}
-	}
-	
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_8_0 || ONE_PASSWORD_EXTENSION_ENABLE_WK_WEB_VIEW
-	else if ([webView isKindOfClass:[WKWebView class]]) {
+	if ([webView isKindOfClass:[WKWebView class]]) {
 		[((WKWebView *)webView) evaluateJavaScript:scriptSource completionHandler:^(NSString *result, NSError *evaluationError) {
 			BOOL success = (result != nil);
 			NSError *error = nil;
@@ -456,8 +406,6 @@ static NSString *const AppExtensionWebViewPageDetails = @"pageDetails";
 			}
 		}];
 	}
-	#endif
-#endif
 }
 
 #ifdef __IPHONE_8_0

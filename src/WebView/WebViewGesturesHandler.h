@@ -16,6 +16,7 @@
  */
 
 #import <Foundation/Foundation.h>
+@import WebKit;
 
 /**
 Wrapper for gestures over a currently visible web view. Can attach the recognizers
@@ -37,7 +38,7 @@ typedef void (^OnLongTapHandlerBlock)(CGPoint);
 - (instancetype)initWithViewToRecognize:(UIView *)viewToRecognize;
 
 /// The webview which will be tested for DOM hits
-@property (nonatomic, weak) UIWebView *currentWebView;
+@property (nonatomic, weak) WKWebView *currentWebView;
 
 @property (nonatomic, strong) OnLongTapHandlerBlock handlerBlock;
 

@@ -275,7 +275,7 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
     }
 }
 
-- (CGPoint)viewportZoomFromJSViewport:(NSArray *)viewportTuple inWebView:(UIWebView *)webView
+- (CGPoint)viewportZoomFromJSViewport:(NSArray *)viewportTuple inWebView:(WKWebView *)webView
 {
     UIEdgeInsets scrollViewInsets = webView.scrollView.contentInset;
 
@@ -300,7 +300,7 @@ NSString *const kFulltextSearchDismissNotification = @"FulltextSearchDismissNoti
                        webVisibleFrame.size.height / _lastKnownViewport.y);
 }
 
-- (CGRect)focusFrameInWebView:(UIWebView *)webView withInsets:(UIEdgeInsets)focusInsets
+- (CGRect)focusFrameInWebView:(WKWebView *)webView withInsets:(UIEdgeInsets)focusInsets
 {
     CGRect webVisibleFrame = webView.superview.frame;
     UIEdgeInsets scrollViewInsets = webView.scrollView.contentInset;

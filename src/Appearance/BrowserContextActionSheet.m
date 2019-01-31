@@ -39,22 +39,22 @@
 
 @implementation BrowserContextActionSheet
 
--(instancetype)initWithDataSource:(id<ContextMenuDataSource>)dataSource
+- (instancetype)initWithDataSource:(id<ContextMenuDataSource>)dataSource
 {
-  if(self = [super init]) {
+  if (self = [super init]) {
     _dataSource = dataSource;
   }
   return self;
 }
 
--(BOOL)isVisible {
+- (BOOL)isVisible {
   return _currentSheet.visible;
 }
 
--(BOOL)createForCurrentWebView:(SAContentWebView *)webView
-                actionsForURLs:(CurrentContextURLs *)urls {
+- (BOOL)createForCurrentWebView:(SAContentWebView *)webView
+                 actionsForURLs:(CurrentContextURLs *)urls {
   NSURL *actionableURL = [[self class] usableURLFromCurrent:urls];
-  if(!actionableURL) {
+  if (!actionableURL) {
     return false;
   }
   _currentWebView = webView;
@@ -97,7 +97,7 @@
   return true;
 }
 
--(void)showInView:(UIView *)view {
+- (void)showInView:(UIView *)view {
   _currentWebView.ignoreAllRequests = YES;
   [_currentSheet showInView:view];
 }
@@ -153,7 +153,7 @@
     if(self.blockOpenInBackground) {
       self.blockOpenInBackground(actionableURL, _currentWebView);
     }
-  } else if(_saveResourceButtonIndex == buttonIndex) {
+  } else if (_saveResourceButtonIndex == buttonIndex) {
     __strong WebDownloadsManager *sMgr = self.downloadsMgr;
     if(sMgr) {
 
@@ -163,17 +163,25 @@
     }
   } else if (_dataSource && [_dataSource isButtonIndex:buttonIndex
                                   registeredForContext:MenuContext_LinkLongTap]) {
-    NSString *selectedText = [_currentWebView stringByEvaluatingJavaScriptFromString:@"window.getSelection().toString()"];
-    _currentURLs.page = _currentWebView.currentURL;
-    [_dataSource actionIndexClicked:buttonIndex withSelection:selectedText withURLs:_currentURLs];
+
+      [_currentWebView evaluateJavaScript:@"window.getSelection().toString()" completionHandler:^(NSString *result, NSError *evaluationError) {
+          BOOL success = (result != nil);
+
+          if (!success) {
+              NSLog(@"EvaluateJavaScript failed: %@", evaluationError);
+              return;
+          }
+
+          _currentURLs.page = _currentWebView.currentURL;
+          [_dataSource actionIndexClicked:buttonIndex withSelection:result withURLs:_currentURLs];
+      }];
   }
   _currentWebView.ignoreAllRequests = NO;
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
   _currentWebView.ignoreAllRequests = NO;
   _currentSheet = nil;
 }
-
 
 @end

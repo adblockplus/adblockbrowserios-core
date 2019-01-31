@@ -51,7 +51,7 @@ import Foundation
  */
 
 open class PasswordMgrItemProvider: UIActivityItemProvider {
-    fileprivate let webView: UIWebView
+    fileprivate let webView: WKWebView
     fileprivate let defaultProvider: UIActivityItemProvider
     fileprivate var extensionItem: NSExtensionItem?
     fileprivate static let extensionInstance = OnePasswordExtension.shared()
@@ -71,7 +71,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
     }
 
     // Factory pattern to encapsulate the asynchronous design of OnePassword extension item creation
-    public static func create( _ forWebView: UIWebView,
+    public static func create( _ forWebView: WKWebView,
                                defaultProvider: UIActivityItemProvider,
                                completionHandler:@escaping (PasswordMgrItemProvider?, Error?) -> Void ) {
         let instance = PasswordMgrItemProvider(webView: forWebView, defaultProvider: defaultProvider)
@@ -85,7 +85,7 @@ open class PasswordMgrItemProvider: UIActivityItemProvider {
         })
     }
 
-    fileprivate init(webView: UIWebView, defaultProvider: UIActivityItemProvider) {
+    fileprivate init(webView: WKWebView, defaultProvider: UIActivityItemProvider) {
         self.webView = webView
         self.defaultProvider = defaultProvider
         super.init(placeholderItem: defaultProvider.placeholderItem ?? NSNull())

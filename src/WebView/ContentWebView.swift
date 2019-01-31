@@ -60,25 +60,34 @@ public final class ContentWebView: SAContentWebView {
         }
     }
 
-    // MARK: - UIWebView
+    // MARK: - WKWebView
 
-    public override func loadRequest(_ request: URLRequest) {
+    public override func load(_ request: URLRequest) -> WKNavigation? {
         var request = request
         request.originalURL = request.url
-        super.loadRequest(request)
+        super.load(request)
+        
+        return nil
     }
 
-    public override func goBack() {
-        super.goBack()
-        historyManager?.onTabIdDidGoBack(identifier)
-        navigationHistoryDidChange()
-    }
+//    public override func loadRequest(_ request: URLRequest) {
+//        var request = request
+//        request.originalURL = request.url
+//        super.loadRequest(request)
+//    }
 
-    public override func goForward() {
-        super.goForward()
-        historyManager?.onTabIdDidGoForward(identifier)
-        navigationHistoryDidChange()
-    }
+    // TODO: Complete these.
+//    public override func goBack() {
+//        super.goBack()
+//        historyManager?.onTabIdDidGoBack(identifier)
+//        navigationHistoryDidChange()
+//    }
+//
+//    public override func goForward() {
+//        super.goForward()
+//        historyManager?.onTabIdDidGoForward(identifier)
+//        navigationHistoryDidChange()
+//    }
 
     // MARK: - DOM Events
 

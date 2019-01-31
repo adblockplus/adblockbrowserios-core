@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ContextMenuItem.h"
+@import WebKit;
 
 @protocol NativeActionCommandDelegate;
 
@@ -42,7 +43,7 @@
              withSelection:(NSString *)selectedText
                   withURLs:(CurrentContextURLs *)urls;
 
-- (void)setEditingWebView:(UIWebView *)webView;
+- (void)setEditingWebView:(WKWebView *)webView;
 - (BOOL)acceptsEditingMenuSelector:(SEL)aSelector
                           withURLs:(CurrentContextURLs *)urls;
 @end

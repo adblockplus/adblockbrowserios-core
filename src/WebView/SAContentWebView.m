@@ -29,8 +29,7 @@
 
 static NSString *const kSessionTabIdFormat = @"KittTab-%lu";
 
-/// declare as UIWebViewDelegate only privately
-@interface SAContentWebView () <UIWebViewDelegate> {
+@interface SAContentWebView () <WKNavigationDelegate> {
     BOOL _isCurrentDocumentQueried;
     /// When the first document query on first didFinishLoad finds the document still
     /// not completed, set up a timer for repeated querying
@@ -66,7 +65,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
     if (self = [super initWithFrame:frame]) {
         // Initialization code
         _identifier = 0;
-        self.delegate = self;
+        self.navigationDelegate = self;
         _networkActive = NO;
         _networkLoadingProgress = 0.0;
         _lastRequestIsBundleExtensionId = nil;
@@ -116,7 +115,8 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
     // Most important is pending URL because it may be overriding the last currentURL
     // Next most relevant is current URL because the UIWebView may not be reporting it as request yet
     // The actual request reported by UIWebView goes as last option because UIWebView is quite lazy
-    return _pendingURL ? _pendingURL : (_currentURLInternal ? _currentURLInternal : self.request.URL);
+    return _pendingURL ? _pendingURL : (_currentURLInternal ? _currentURLInternal : self.URL);
+//    return _pendingURL ? _pendingURL : (_currentURLInternal ? _currentURLInternal : self.request.URL);
 }
 
 - (void)setCurrentURL:(NSURL *)currentURL
@@ -186,16 +186,17 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
     [URLAuthCache.sharedInstance set:mainFrameAuthenticationResult];
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - WKNavigationDelegate
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+                    decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
 
-- (BOOL)webView:(UIWebView *)sender shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSNumber *typeNumber = [ResourceTypeDetector objc_detectTypeFromRequest:request allowExtended:YES];
+    NSNumber *typeNumber = [ResourceTypeDetector objc_detectTypeFromRequest:navigationAction.request allowExtended:YES];
     WebRequestResourceType type = typeNumber ? typeNumber.integerValue : -1; // -1 is undetermined type
 
-    LogInfo(@"tab %lu shouldStartLoadWithRequest %@ %@", (unsigned long)_identifier, [request.URL isEqual:request.mainDocumentURL] ? @"main" : @"", request.URL);
+    LogInfo(@"tab %lu shouldStartLoadWithRequest %@ %@", (unsigned long)_identifier, [navigationAction.request.URL isEqual:navigationAction.request.mainDocumentURL] ? @"main" : @"", navigationAction.request.URL);
 
-    NSURL *reqUrl = [request URL];
+    NSURL *reqUrl = [navigationAction.request URL];
     /**
      about: requests are ignorable until Kitt actually uses it for some meta information displaying.
      Possible cases:
@@ -215,18 +216,22 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
              approval prerequisite! Hence there is no iframe context and it does not make sense to
              continue the request processing beyond this check.
              */
-            return YES;
+            decisionHandler(WKNavigationActionPolicyAllow);
+            return;
         }
         if (type != WebRequestResourceTypeMainFrame) {
             // allow about:blank if it's not main frame
-            return YES;
+            decisionHandler(WKNavigationActionPolicyAllow);
+            return;
         }
         LogInfo(@"shouldStartLoadWithRequest tab %lu ignoring", (unsigned long)_identifier);
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
     if (_ignoreAllRequests) {
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
     if ([ProtocolHandlerJSBridge isBridgeRequestURL:reqUrl]) {
@@ -234,7 +239,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
             // some kind of virtual page (tab id fixing etc.) which must not appear
             // in webrequest, network activity etc. so return immediately
             // after updating the active delegate
-            return [_activeBrowserDelegate webView:sender shouldStartLoadWithRequest:request navigationType:navigationType];
+            return [_activeBrowserDelegate webView:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
         } else {
             [_contentScriptLoaderDelegate filterExtensionInstallationFromURL:reqUrl
                                                            completionHandler:^(NSError *error) {
@@ -247,40 +252,50 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
                                                                    [self->_extensionViewPresenter showExtensionView];
                                                                }
                                                            }];
-            return NO;
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
         }
     }
-    _lastRequestIsBundleExtensionId = [ProtocolHandlerChromeExt isBundleResourceRequest:request] ? [ProtocolHandlerChromeExt extensionIdOfBundleResourceRequest:request] : nil;
+    _lastRequestIsBundleExtensionId = [ProtocolHandlerChromeExt isBundleResourceRequest:navigationAction.request] ? [ProtocolHandlerChromeExt extensionIdOfBundleResourceRequest:navigationAction.request] : nil;
 
     // If browserDelegate is not set or does not implement shouldStartLoadWithRequest,
     // we have no information that would authorize us to deny the request, hence
     // allow by default
-    BOOL shouldStart = YES;
+    __block BOOL shouldStart = YES;
     if ([_activeBrowserDelegate respondsToSelector:_cmd]) {
-        shouldStart = [_activeBrowserDelegate webView:sender shouldStartLoadWithRequest:request navigationType:navigationType];
+        [_activeBrowserDelegate webView:webView
+        decidePolicyForNavigationAction:navigationAction
+                        decisionHandler:^(WKNavigationActionPolicy policy) {
+                            shouldStart = policy ? WKNavigationActionPolicyAllow : WKNavigationActionPolicyCancel;
+        }];
     }
 
     if (shouldStart) {
         // NetworkActivityObserver should be interested only in events and it's complete command
-        shouldStart = [[NetworkActivityObserver sharedInstance] webView:sender
-                                             shouldStartLoadWithRequest:request
-                                                         navigationType:navigationType];
+        [[NetworkActivityObserver sharedInstance] webView:webView
+                          decidePolicyForNavigationAction:navigationAction
+                                          decisionHandler:^(WKNavigationActionPolicy policy) {
+                                              shouldStart = policy ? WKNavigationActionPolicyAllow : WKNavigationActionPolicyCancel;
+        }];
     }
     // PZ note: the above NetworkActivityObserver returns NO only if request is for a special
     // DOM observation bridge URL, so there is no need to continue with chrome APIs composition
     if (!shouldStart) {
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
-    if (!([ProtocolHandlerChromeExt isBundleResourceRequest:request]
-            || [request.URL.scheme isEqualToString:@"http"]
-            || [request.URL.scheme isEqualToString:@"https"])) {
+    if (!([ProtocolHandlerChromeExt isBundleResourceRequest:navigationAction.request]
+          || [navigationAction.request.URL.scheme isEqualToString:@"http"]
+          || [navigationAction.request.URL.scheme isEqualToString:@"https"])) {
         // Not an obvious web request, try if somebody else is interested in handling it
         // (mailto, phone, itms-apps)
         UIApplication *app = [UIApplication sharedApplication];
-        if ([app canOpenURL:request.URL]) {
-            [app openURL:request.URL];
+        if ([app canOpenURL:navigationAction.request.URL]) {
+            [app openURL:navigationAction.request.URL];
         }
-        return NO;
+
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
 
     if (type == WebRequestResourceTypeObject || type == WebRequestResourceTypeOther) {
@@ -290,16 +305,17 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
                                                   cancelButtonTitle:[LocalizationResources alertOKText]
                                                   otherButtonTitles:nil];
         [alertView show];
-        return NO;
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
     }
-    if ([request.URL isEqual:request.mainDocumentURL]) {
-        _currentRequest = request;
+    if ([navigationAction.request.URL isEqual:navigationAction.request.mainDocumentURL]) {
+        _currentRequest = navigationAction.request;
         // new mainframe request
         // allow DOM querying
         _documentQueryTimer = nil;
         _isCurrentDocumentQueried = NO;
         // remember for the case when the URL sticks (it's not going to be a redirection)
-        _pendingURL = request.URL;
+        _pendingURL = navigationAction.request.URL;
         _isFirstFrameLoadAfterShouldStart = YES;
 
         id<AuthenticationResultProtocol> newAuthResult = [[AuthenticationResult alloc] initWithLevel:RequestSecurityLevelUnknown host:_pendingURL.host];
@@ -316,11 +332,12 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
         _mainFrameAuthenticationResult = newAuthResult;
         [self didChangeValueForKey:NSStringFromSelector(@selector(mainFrameAuthenticationResult))];
     }
-    return YES;
+    decisionHandler(WKNavigationActionPolicyAllow);
+    return;
+
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)sender
-{
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     if (_isFirstFrameLoadAfterShouldStart) {
         // last allowed URL is actually being loaded.
         // Clear pending and the last known document title
@@ -331,16 +348,18 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
         self.documentTitle = nil;
         self.status = ContentWebViewLoading;
     }
-    if ([_activeBrowserDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [_activeBrowserDelegate webViewDidStartLoad:sender];
+
+    if ([_activeBrowserDelegate respondsToSelector:@selector(webView:didStartProvisionalNavigation:)]) {
+        [_activeBrowserDelegate webView:webView didStartProvisionalNavigation:navigation];
     }
-    [[NetworkActivityObserver sharedInstance] webViewDidStartLoad:sender];
+
+    [[NetworkActivityObserver sharedInstance] webView:webView didStartProvisionalNavigation:navigation];
 
     [self navigationHistoryDidChange];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)sender
-{
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    
     LogDebug(@"Tab %lu didFinishLoad %@", (unsigned long)_identifier, _currentURLInternal);
     /*
      Web view did finish load, it is a SSL link but security level is still not determined.
@@ -360,17 +379,17 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
 
     if (!_isCurrentDocumentQueried
         && !_documentQueryTimer
-        && ![self queryDocumentInWebView:sender]) {
+        && ![self queryDocumentInWebView:webView]) {
         // Document was not queried yet, timer is not running and first query says document is not completed.
         // PZ NOTE: i tried to set up a single persistent timer and then cancel/resume it repeatedly. But the
         // event handler never fired for me that way. Don't know why.
         _documentQueryTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
         dispatch_source_set_timer(_documentQueryTimer, DISPATCH_TIME_NOW, 200ull * NSEC_PER_MSEC, 50ull * NSEC_PER_MSEC);
         __weak typeof(self) wSelf = self;
-        __weak typeof(sender) wSender = sender;
+        __weak typeof(WKWebView *) wWebview = webView;
         dispatch_source_set_event_handler(_documentQueryTimer, ^{
             __strong typeof(self) sSelf = wSelf;
-            if ([sSelf queryDocumentInWebView:wSender]) {
+            if ([sSelf queryDocumentInWebView:wWebview]) {
                 sSelf->_documentQueryTimer = nil;
             }
         });
@@ -378,59 +397,60 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
     }
     // Must go after historymanager update because it will be queried for the
     // latest history updates
-    if ([_activeBrowserDelegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [_activeBrowserDelegate webViewDidFinishLoad:sender];
+    if ([_activeBrowserDelegate respondsToSelector:@selector(webView:didFinishNavigation:)]) {
+        [_activeBrowserDelegate webView:webView didFinishNavigation:navigation];
     }
-    [[NetworkActivityObserver sharedInstance] webViewDidFinishLoad:sender];
+    [[NetworkActivityObserver sharedInstance] webView:webView didFinishNavigation:navigation];
 
     [self.chromeTab saveState];
     [self navigationHistoryDidChange];
 }
 
-- (void)webView:(UIWebView *)sender didFailLoadWithError:(NSError *)error
-{
-    LogInfo(@"didFailLoad %lu %@ %ld", (unsigned long)_identifier, sender.request.URL.absoluteString, (long)error.code);
-    switch ([error code]) {
-    case kCFURLErrorCancelled: {
-        // Do nothing in this case
-        break;
-    }
-    case 102: {
-        // Frame load interrupted.
-        // Is somehow linked to site redirection (like most frequently www.site.com to mobile.site.com)
-        // But there is no visual difference in behavior, so according to sources it is safe to ignore
-        break;
-    }
-    case 204: {
-        // Plug-in handled load
-        // http://iphonedevsdk.com/forum/iphone-sdk-development/23580-webkiterrordomain-error-204.html
-        break;
-    }
-    case kCFURLErrorUserCancelledAuthentication: {
-        // The error name says it all. User did it so he doesn't need to know again about it.
-        // Note: consciously produced in ProtocolHandler authentication challenge handling
-    } break;
-    default: {
-        NSDictionary *userInfo = [error userInfo];
-        __unused NSString *url = userInfo ? [userInfo objectForKey:NSURLErrorFailingURLStringErrorKey]
-                                          : @"undefined";
-        NSString *title = [Utils applicationName];
-        NSString *message = [error localizedDescription];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:[LocalizationResources alertOKText]
-                                              otherButtonTitles:nil];
-        [alert show];
-        // Must go after historymanager update because it will be queried for the
-        // latest history updates
-        if ([self.chromeTab active] && [_activeBrowserDelegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
-            [_activeBrowserDelegate webView:sender didFailLoadWithError:error];
-        }
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    //didFailLoadWithError
 
-        [[NetworkActivityObserver sharedInstance] webView:sender didFailLoadWithError:error];
-        break;
-    }
+    LogInfo(@"didFailLoad %lu %@ %ld", (unsigned long)_identifier, webView.URL.absoluteString, (long)error.code);
+    switch ([error code]) {
+        case kCFURLErrorCancelled: {
+            // Do nothing in this case
+            break;
+        }
+        case 102: {
+            // Frame load interrupted.
+            // Is somehow linked to site redirection (like most frequently www.site.com to mobile.site.com)
+            // But there is no visual difference in behavior, so according to sources it is safe to ignore
+            break;
+        }
+        case 204: {
+            // Plug-in handled load
+            // http://iphonedevsdk.com/forum/iphone-sdk-development/23580-webkiterrordomain-error-204.html
+            break;
+        }
+        case kCFURLErrorUserCancelledAuthentication: {
+            // The error name says it all. User did it so he doesn't need to know again about it.
+            // Note: consciously produced in ProtocolHandler authentication challenge handling
+        } break;
+        default: {
+            NSDictionary *userInfo = [error userInfo];
+            __unused NSString *url = userInfo ? [userInfo objectForKey:NSURLErrorFailingURLStringErrorKey]
+            : @"undefined";
+            NSString *title = [Utils applicationName];
+            NSString *message = [error localizedDescription];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                            message:message
+                                                           delegate:nil
+                                                  cancelButtonTitle:[LocalizationResources alertOKText]
+                                                  otherButtonTitles:nil];
+            [alert show];
+            // Must go after historymanager update because it will be queried for the
+            // latest history updates
+            if ([self.chromeTab active] && [_activeBrowserDelegate respondsToSelector:@selector(webView:didFailNavigation:withError:)]) {
+                [_activeBrowserDelegate webView:webView didFailNavigation:navigation withError:error];
+            }
+
+            [[NetworkActivityObserver sharedInstance] webView:webView didFailNavigation:navigation withError:error];
+            break;
+        }
     }
 
     [self.chromeTab saveState];
@@ -469,28 +489,34 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
 
 - (NSString *)stringFromEvalJS:(NSString *)jsString
 {
-    return [self stringByEvaluatingJavaScriptFromString:jsString];
+    __block NSString *resultString;
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    [self evaluateJavaScript:jsString completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error evaluating JS: %@", [error localizedDescription]);
+        } else {
+            resultString = [NSString stringWithFormat:@"%@", result];
+        }
+        dispatch_semaphore_signal(sem);
+    }];
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    return resultString;
 }
 
 #pragma mark - Private
 
 /// @return if document is completed
-- (bool)queryDocumentInWebView:(UIWebView *)webView
+- (bool)queryDocumentInWebView:(WKWebView *)webView
 {
     NSString *readyState = self.readyState;
     if (![readyState isEqualToString:@"complete"]) {
         return NO;
     }
     self.status = ContentWebViewComplete;
-    if (!webView.request) {
-        // Some kind of strange real world browsing corner case, not easily reproducible
-        LogError(@"webview claims readyState=complete but no request");
-        return YES;
-    }
-    NSURL *mainFrameLoadingURL = webView.request.mainDocumentURL;
+    NSURL *mainFrameLoadingURL = webView.URL;
     if (!mainFrameLoadingURL) {
         // Some kind of strange real world browsing corner case, not easily reproducible
-        LogError(@"webview claims readyState=complete but request has no mainDocumentURL");
+        LogError(@"webview claims readyState=complete but request has no URL");
         return YES;
     }
     if (![ProtocolHandlerJSBridge isBridgeRequestURL:mainFrameLoadingURL]) {
@@ -498,7 +524,7 @@ NSString *const kContentWebViewFinishedLoadingNotification = @"ContentWebView.fi
         [self.historyManager createOrUpdateHistoryFor:mainFrameLoadingURL
                                              andTitle:self.documentTitle
                                    updateVisitCounter:NO];
-        [self.faviconLoader verifyFaviconWith:self.request];
+        [self.faviconLoader verifyFaviconWith:self.URL];
     }
     // @todo onCompleted for subframes, if it's even technically possible. We do have
     // frame id mapping in ProtocolHandler, but that signals only finished loading on wire,

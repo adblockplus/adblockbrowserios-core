@@ -238,14 +238,14 @@ typedef NS_ENUM(NSUInteger, APIExecutionContext) {
 }
 
 - (BOOL)injectJavaScriptCode:(NSString *)jsCode
-                   toWebView:(UIWebView *)webView
+                   toWebView:(WKWebView *)webView
                    orContext:(JSContext *)context
        errorReportProperties:(NSDictionary *)properties
 {
     // JS evaluation in UIWebView can only return string
     // The JS API is instrumented to return a specific string on success,
     // or a JSON stringified Error on failure
-    NSString *evalResult;
+    __block NSString *evalResult;
     if (context != nil) {
         JSValue *value = [context evaluateScript:jsCode];
         if (context.exception) {
@@ -253,7 +253,16 @@ typedef NS_ENUM(NSUInteger, APIExecutionContext) {
         }
         evalResult = [value toString];
     } else {
-        evalResult = [webView stringByEvaluatingJavaScriptFromString:jsCode];
+        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        [webView evaluateJavaScript:jsCode completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"Error evaluating JS: %@", [error localizedDescription]);
+            }
+
+            evalResult = [NSString stringWithFormat:@"%@", result];
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+        }];
+        dispatch_semaphore_signal(sem);
     }
     if ([API_SUCCESS_RETVAL isEqualToString:evalResult]) {
         return YES;

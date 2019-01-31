@@ -26,24 +26,15 @@ extension ExtensionBackgroundContext {
         }
 
         let webView: BackgroundFacade
-
-        if Settings.useWKWebViewIfAvailable() {
-            let wkWebView = BackgroundWebView(frame: CGRect())
-            wkWebView.context = self
-            wkWebView.uiDelegate = self.uiDelegate
-            wkWebView.navigationDelegate = self
-            webView = wkWebView
-        } else {
-            webView = SABackgroundWebView(frame: CGRect())
-        }
+        let wkWebView = BackgroundWebView(frame: CGRect())
+        wkWebView.context = self
+        wkWebView.uiDelegate = self.uiDelegate
+        wkWebView.navigationDelegate = self
+        webView = wkWebView
 
         webViews[`extension`.extensionId] = webView
         // register the context with switchboard
         switchboard.registerBackgroundWebView(webView, for: `extension`)
-
-        if let webView = webView as? SABackgroundWebView {
-            webView.delegate = self
-        }
 
         // run the scripts unless commanded to skip them
         // (it's up to the commanding code to run loadScripts *later)

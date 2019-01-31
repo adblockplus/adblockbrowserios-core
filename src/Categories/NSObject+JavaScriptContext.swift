@@ -27,7 +27,7 @@ public extension NSObject {
 
         // find the frame originating webview
         /*let frameInternalWebView = frame.valueForKeyPath:("webView")*/
-        var originatingWebView: UIWebView?
+        var originatingWebView: WKWebView?
         for knownWebView in WebViewManager.sharedInstance.webViews {
             // Skip views which are not UIWebView
             if knownWebView.value(forKeyPath: "documentView.webView") as AnyObject === webView {
@@ -106,7 +106,7 @@ public extension NSObject {
     }
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    static func didCreateJavaScriptContext(_ context: JSContext, forFrame frame: WebKitFrame, inWebView webView: UIWebView) {
+    static func didCreateJavaScriptContext(_ context: JSContext, forFrame frame: WebKitFrame, inWebView webView: WKWebView) {
         assert(Thread.isMainThread, "didCreateJavaScriptContext is expected to be run on main thread")
 
         guard let webView = webView as? SAWebView else {

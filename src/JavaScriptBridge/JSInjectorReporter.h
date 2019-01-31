@@ -17,6 +17,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BridgeEnums.h"
+@import WebKit;
 
 @import JavaScriptCore;
 
@@ -83,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
  controller with preformatted output was displayed.
 */
 - (BOOL)injectJavaScriptCode:(NSString *)jsCode
-                   toWebView:(UIWebView *)webView
+                   toWebView:(WKWebView *)webView
                    orContext:(JSContext *__nullable)context
        errorReportProperties:(NSDictionary *)properties;
 

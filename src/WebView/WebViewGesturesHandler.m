@@ -50,7 +50,7 @@
     [_viewToRecognize removeGestureRecognizer:_longTapRecognizer];
 }
 
-- (void)setCurrentWebView:(UIWebView *)currentWebView
+- (void)setCurrentWebView:(WKWebView *)currentWebView
 {
     _currentWebView = currentWebView;
     if (!_webViewIntrospectionJSCode) {
@@ -80,19 +80,61 @@
 
     // convert point from view to HTML coordinate system
     CGSize viewSize = _currentWebView.frame.size;
-    CGSize windowSize = CGSizeMake(
-        [[_currentWebView stringByEvaluatingJavaScriptFromString:@"window.innerWidth"] floatValue],
-        [[_currentWebView stringByEvaluatingJavaScriptFromString:@"window.innerHeight"] floatValue]);
+    __block CGFloat windowInnerWidth;
+    __block CGFloat windowInnerHeight;
+
+    dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+    [_currentWebView evaluateJavaScript:@"window.innerWidth" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (!error) {
+            NSString *stringResult = [NSString stringWithFormat:@"%@", result];
+            windowInnerWidth = [stringResult floatValue];
+        } else {
+            NSLog(@"Error evaluatingJS for innerWidth: %@", [error localizedDescription]);
+        }
+        dispatch_semaphore_signal(sem);
+    }];
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+
+    dispatch_semaphore_t sem2 = dispatch_semaphore_create(0);
+    [_currentWebView evaluateJavaScript:@"window.innerHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (!error) {
+            NSString *stringResult = [NSString stringWithFormat:@"%@", result];
+            windowInnerHeight = [stringResult floatValue];
+        } else {
+            NSLog(@"Error evaluatingJS for innerHeight: %@", [error localizedDescription]);
+        }
+        dispatch_semaphore_signal(sem2);
+    }];
+    dispatch_semaphore_wait(sem2, DISPATCH_TIME_FOREVER);
+
+    CGSize windowSize = CGSizeMake(windowInnerWidth, windowInnerHeight);
     CGFloat f = windowSize.width / viewSize.width;
     point.x = point.x * f;
     point.y = point.y * f;
 
-    [_currentWebView stringByEvaluatingJavaScriptFromString:_webViewIntrospectionJSCode];
+    dispatch_semaphore_t sem3 = dispatch_semaphore_create(0);
+    [_currentWebView evaluateJavaScript:_webViewIntrospectionJSCode completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error evaluatingJS for introspectionJSCode: %@", [error localizedDescription]);
+        }
+        dispatch_semaphore_signal(sem3);
+    }];
+    dispatch_semaphore_wait(sem3, DISPATCH_TIME_FOREVER);
 
     // get the Tags at the touch location
-    NSString *elementsJSON = [_currentWebView stringByEvaluatingJavaScriptFromString:
-                                                  [NSString stringWithFormat:@"com_kitt_SearchElementsPropertiesAtPoint(%li,%li);",
-                                                            (long)point.x, (long)point.y]];
+    __block NSString *elementsJSON;
+
+    dispatch_semaphore_t sem4 = dispatch_semaphore_create(0);
+    [_currentWebView evaluateJavaScript:[NSString stringWithFormat:@"com_kitt_SearchElementsPropertiesAtPoint(%li,%li);",
+                                         (long)point.x, (long)point.y] completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (!error) {
+            elementsJSON = [NSString stringWithFormat:@"%@", result];
+        } else {
+            NSLog(@"Error evaluatingJS for searchElementsAtPropertiesAtPoint: %@", [error localizedDescription]);
+        }
+        dispatch_semaphore_signal(sem4);
+    }];
+    dispatch_semaphore_wait(sem4, DISPATCH_TIME_FOREVER);
 
     NSData *elementsData = [elementsJSON dataUsingEncoding:NSUTF8StringEncoding];
     NSError *err = nil;

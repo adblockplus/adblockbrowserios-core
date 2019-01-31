@@ -30,7 +30,7 @@
 @interface ContextMenuProvider ()
 @property (nonatomic, assign) id<NativeActionCommandDelegate> commandDelegate;
 @property (nonatomic, strong) NSMutableArray *registeredMenuItems;
-@property (nonatomic, assign) UIWebView *editingWebView;
+@property (nonatomic, assign) WKWebView *editingWebView;
 @property (nonatomic, strong) NSRegularExpression *rexEditingMenuSelector;
 @end
 
@@ -285,7 +285,7 @@
     [self updateEditingMenuItems];
 }
 
-- (void)setEditingWebView:(UIWebView *)webView
+- (void)setEditingWebView:(WKWebView *)webView
 {
     _editingWebView = webView;
 }
@@ -340,17 +340,27 @@
 
 - (void)selectedEditingMenuId:(NSString *)menuId
 {
-    NSString *selectedText = [_editingWebView stringByEvaluatingJavaScriptFromString:@"window.getSelection().toString()"];
-    NSInteger idx = [self arrayIndexForMenuId:menuId];
-    ContextMenuItem *menuItem = [_registeredMenuItems objectAtIndex:idx];
-    NSDictionary *clickProps = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                 menuItem.menuId, @"menuItemId",
-                                             [menuItem.lastPageURL absoluteString], @"pageUrl",
-                                             [NSNull null], @"linkUrl",
-                                             selectedText, @"selectionText",
-                                             nil];
-    [_commandDelegate.eventDispatcher contextMenuClicked:menuItem.originExtension
-                                                    json:clickProps];
+    [_editingWebView evaluateJavaScript:@"window.getSelection().toString()"
+                      completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+
+                          NSString *selectedText = [NSString stringWithFormat:@"%@", result];
+
+                          if (error) {
+                              LogError(@"Error evaluating JavaScript: %@", error.localizedDescription);
+                              return;
+                          }
+
+                          NSInteger idx = [self arrayIndexForMenuId:menuId];
+                          ContextMenuItem *menuItem = [self.registeredMenuItems objectAtIndex:idx];
+                          NSDictionary *clickProps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                      menuItem.menuId, @"menuItemId",
+                                                      [menuItem.lastPageURL absoluteString], @"pageUrl",
+                                                      [NSNull null], @"linkUrl",
+                                                      selectedText, @"selectionText",
+                                                      nil];
+                          [self.commandDelegate.eventDispatcher contextMenuClicked:menuItem.originExtension
+                                                                          json:clickProps];
+    }];
 }
 
 @end

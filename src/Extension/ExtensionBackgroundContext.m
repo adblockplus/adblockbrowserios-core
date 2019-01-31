@@ -108,19 +108,21 @@
 }
 
 #pragma mark -
-#pragma mark UIWebViewDelegate
+#pragma mark WKNavigationDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSURL *reqUrl = [request URL];
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+                    decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+
+    NSURL *reqUrl = [webView URL];
     LogDebug(@"Background shouldStartLoadWithRequest %@", [reqUrl absoluteString]);
     // allow virtual protocols
     // (delegate to ProtocolHandlerChromeExt, ProtocolHandlerJSBridge)
-    if ([ProtocolHandlerChromeExt isBundleResourceRequest:request] ||
-        [ProtocolHandlerJSBridge isBridgeRequestURL:request.URL]) {
-        return YES;
+    if ([ProtocolHandlerChromeExt isBundleResourceRequest:navigationAction.request] ||
+        [ProtocolHandlerJSBridge isBridgeRequestURL:navigationAction.request.URL]) {
+        return decisionHandler(WKNavigationActionPolicyAllow);
     }
-    return NO;
+    return decisionHandler(WKNavigationActionPolicyCancel);
 }
 
 #pragma mark -
