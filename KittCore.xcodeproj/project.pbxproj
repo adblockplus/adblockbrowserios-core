@@ -1568,11 +1568,13 @@
 					};
 					E9EC700C1B25D79800C4C905 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = GRYYZR985A;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Manual;
 					};
 					E9EC73031B25DA3800C4C905 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = GRYYZR985A;
 						LastSwiftMigration = 0800;
 					};
 				};
@@ -2073,6 +2075,7 @@
 		E92575AA1DF09A9300B93166 /* Devbuild */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(inherited)";
@@ -2089,6 +2092,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-ResourceBundle.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
@@ -2287,6 +2291,7 @@
 		E9EC701C1B25D79800C4C905 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(inherited)";
@@ -2302,6 +2307,7 @@
 		E9EC701D1B25D79800C4C905 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(inherited)";
@@ -2319,6 +2325,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-ResourceBundle.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
@@ -2335,6 +2342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = GRYYZR985A;
 				GCC_PREFIX_HEADER = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/Info-ResourceBundle.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
