@@ -38,7 +38,7 @@ public extension BrowserStateCoreData {
      A function with nonoptional retval will be bridged but translated as _Nullable !!! (may be a compiler bug even)
      */
     @objc
-    public func metadataIfMigrationNeeded(_ sourceStoreURL: URL, destinationModel: NSManagedObjectModel) throws -> [String: Any] {
+    func metadataIfMigrationNeeded(_ sourceStoreURL: URL, destinationModel: NSManagedObjectModel) throws -> [String: Any] {
         let options: [AnyHashable: Any] = [
             NSInferMappingModelAutomaticallyOption: true,
             NSMigratePersistentStoresAutomaticallyOption: true]
@@ -51,7 +51,7 @@ public extension BrowserStateCoreData {
     }
 
     @objc
-    public func migrate(_ storeURL: URL, sourceModel: NSManagedObjectModel, destinationModel: NSManagedObjectModel) throws {
+    func migrate(_ storeURL: URL, sourceModel: NSManagedObjectModel, destinationModel: NSManagedObjectModel) throws {
         // Compute the mapping between old model and new model
         let mapping = try NSMappingModel.inferredMappingModel(forSourceModel: sourceModel, destinationModel: destinationModel)
         // Backup old store
@@ -73,7 +73,7 @@ public extension BrowserStateCoreData {
     }
 
     @objc
-    public func createContext(forStoreURL storeURL: URL, withModel model: NSManagedObjectModel, wasMigrated: Bool) throws -> NSManagedObjectContext {
+    func createContext(forStoreURL storeURL: URL, withModel model: NSManagedObjectModel, wasMigrated: Bool) throws -> NSManagedObjectContext {
         // Since iOS7 the default sqlite journaling mode is Write-Ahead-Log.
         // The mode must be turned off when adding a migrated (backed up) store
         // https://developer.apple.com/library/ios/qa/qa1809/_index.html

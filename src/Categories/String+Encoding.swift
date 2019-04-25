@@ -41,7 +41,7 @@ private let URLQuerySafeCharacterSet = { () -> CharacterSet in
 }()
 
 public extension String {
-    public func stringByEncodingToURLSafeFormat() -> String? {
+    func stringByEncodingToURLSafeFormat() -> String? {
         return addingPercentEncoding(withAllowedCharacters: URLQuerySafeCharacterSet)
     }
 }
