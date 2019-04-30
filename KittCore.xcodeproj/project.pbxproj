@@ -1506,7 +1506,6 @@
 				E9EC6FFE1B25D79800C4C905 /* Frameworks */,
 				E9EC6FFF1B25D79800C4C905 /* Headers */,
 				E9EC70001B25D79800C4C905 /* Resources */,
-				E95A61201C4D39CA00433F91 /* Patch Info.plist */,
 				E537DA2C200CD4B3003DE146 /* Run SwiftLint */,
 			);
 			buildRules = (
@@ -1541,7 +1540,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E9EC73081B25DA3800C4C905 /* Build configuration list for PBXNativeTarget "KittCoreBundle" */;
 			buildPhases = (
-				E95A61211C4D3E1500433F91 /* Patch Info.plist */,
 				E9EC73191B25DB1600C4C905 /* Npm + Grunt build JS API */,
 				E9EC73021B25DA3800C4C905 /* Resources */,
 			);
@@ -1687,34 +1685,6 @@
 			shellPath = /bin/sh;
 			shellScript = "SWIFTLINT=\"/usr/local/bin/swiftlint\"\nif [ -f $SWIFTLINT ]\nthen\n    $SWIFTLINT\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
-		E95A61201C4D39CA00433F91 /* Patch Info.plist */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Patch Info.plist";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./deploy/patch-appinfo.sh .. package.json";
-		};
-		E95A61211C4D3E1500433F91 /* Patch Info.plist */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Patch Info.plist";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./deploy/patch-appinfo.sh .. package.json";
-		};
 		E9EC73191B25DB1600C4C905 /* Npm + Grunt build JS API */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -1727,7 +1697,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./deploy/build-jsapi.sh .. xcode";
+			shellScript = "./deploy/build-jsapi.sh .. xcode\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
