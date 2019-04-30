@@ -18,7 +18,7 @@
 import Foundation
 
 @objc public protocol BackgroundFacade: WebViewFacade {
-    weak var bridgeSwitchboard: BridgeSwitchboard? { get set }
+    dynamic weak var bridgeSwitchboard: BridgeSwitchboard? { get set }
     weak var `extension`: BrowserExtension? { get set }
 
     func loadExtensionBundleScript()
