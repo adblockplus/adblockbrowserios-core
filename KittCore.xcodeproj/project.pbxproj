@@ -1579,10 +1579,9 @@
 			};
 			buildConfigurationList = E9EC6FFC1B25D79800C4C905 /* Build configuration list for PBXProject "KittCore" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				cs,
 				ar,
@@ -1616,6 +1615,7 @@
 				"zh-Hant",
 				pt,
 				"pt-PT",
+				Base,
 			);
 			mainGroup = E9EC6FF81B25D79800C4C905;
 			productRefGroup = E9EC70031B25D79800C4C905 /* Products */;
