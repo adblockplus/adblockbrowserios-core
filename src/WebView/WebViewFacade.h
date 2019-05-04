@@ -25,7 +25,7 @@
 
 @property (readonly) CallbackOriginType origin;
 
-@property (readonly, nullable, weak) BridgeSwitchboard *bridgeSwitchboard;
+@property (nullable, weak) BridgeSwitchboard *bridgeSwitchboard;
 
 - (void)evaluateJavaScript:(NSString *__nonnull)javaScriptString
          completionHandler:(void (^__nullable)(id __nullable, NSError *__nullable))completion;

@@ -75,6 +75,10 @@
 
 - (void)registerBackgroundWebView:(id<BackgroundFacade>)aWebView forExtension:(BrowserExtension *)extension
 {
+    // This should be the only assignment of bridgeSwitchboard. The readonly
+    // attribute was removed from the protocol to prevent performance
+    // degradation with Swift instances of BackgroundFacade.
+    // See https://gitlab.com/eyeo/auxiliary/issue/issues/338.
     aWebView.bridgeSwitchboard = self;
     aWebView.extension = extension;
     if ([aWebView isKindOfClass:[WKWebView class]]) {
