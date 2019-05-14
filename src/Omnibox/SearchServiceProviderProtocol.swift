@@ -72,7 +72,8 @@ extension SearchServiceProviderProtocol {
         var cfEncodingEnum = kCFStringEncodingInvalidId
         let encodingStr = httpResponse.textEncodingName
         if encodingStr != nil {
-            cfEncodingEnum = CFStringConvertIANACharSetNameToEncoding(encodingStr as CFString!)
+            let cfEncodingStr = encodingStr! as CFString
+            cfEncodingEnum = CFStringConvertIANACharSetNameToEncoding(cfEncodingStr)
         }
         var encodingEnum = String.Encoding.utf8
         if cfEncodingEnum != kCFStringEncodingInvalidId {
