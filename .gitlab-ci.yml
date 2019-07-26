@@ -11,6 +11,7 @@ before_script:
   - rm -rf ../adblockbrowserios
   - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/eyeo/adblockplus/adblockbrowserios.git ../adblockbrowserios
   - cd ../adblockbrowserios
+  - git checkout -b develop origin/develop
   - carthage update
   - cd ../adblockbrowserios-core
   - gem install bundler
