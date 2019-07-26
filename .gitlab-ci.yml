@@ -1,0 +1,23 @@
+# CI Script used for Adblock Browser Core
+
+stages:
+  - unit_tests
+
+variables:
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+
+before_script:
+  - gem install bundler
+  - bundle install
+
+unit_tests:
+  tags:
+    - ios, abbcore
+  stage: unit_tests
+  script:
+    - bundle exec fastlane ios tests
+  artifacts:
+    paths:
+      - fastlane/tests/
+  allow_failure: false
