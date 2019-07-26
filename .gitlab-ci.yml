@@ -9,7 +9,7 @@ variables:
 
 before_script:
   - rm -rf ../adblockbrowserios
-  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/adblockplus/adblockbrowserios.git ../adblockbrowserios
+  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/eyeo/adblockplus/adblockbrowserios.git ../adblockbrowserios
   - cd ../adblockbrowserios
   - carthage update
   - cd ../adblockbrowserios-core
