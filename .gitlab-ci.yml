@@ -10,6 +10,7 @@ variables:
 before_script:
   - gem install bundler
   - bundle install
+  - npm install
 
 unit_tests:
   tags:
