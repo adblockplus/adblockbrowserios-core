@@ -8,7 +8,7 @@ variables:
   LANG: "en_US.UTF-8"
 
 before_script:
-  - git clone https://gitlab.com/eyeo/adblockplus/adblockbrowserios-core.git ../adblockbrowserios
+  - git clone https://gitlab.com/eyeo/adblockplus/adblockbrowserios.git ../adblockbrowserios
   - cd ../adblockbrowserios
   - carthage update
   - cd ../adblockbrowserios-core
