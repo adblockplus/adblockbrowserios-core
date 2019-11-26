@@ -171,8 +171,8 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 
 - (void)registerActivityDelegate:(id<NetworkActivityDelegate>)delegate forTabId:(NSUInteger)tabId
 {
-    @synchronized(_delegatesLock)
-    {
+//    @synchronized(_delegatesLock)
+//    {
         [_delegateForTabId setObject:delegate forKey:@(tabId)];
         __weak __typeof(delegate) wDelegate = delegate;
         [_filterForTabId setObject:[[NetworkActivityFilter alloc] initWithInterval:ACTIVITY_TIMEOUT
@@ -180,16 +180,16 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
                                                                           [wDelegate onNetworkActivityState:[stateBool boolValue]];
                                                                       }]
                             forKey:@(tabId)];
-    }
+//    }
 }
 
 - (void)unregisterActivityDelegateForTabId:(NSUInteger)tabId
 {
-    @synchronized(_delegatesLock)
-    {
+//    @synchronized(_delegatesLock)
+//    {
         [_delegateForTabId removeObjectForKey:@(tabId)];
         [_filterForTabId removeObjectForKey:@(tabId)];
-    }
+//    }
 }
 
 #pragma mark - NSURLConnectionDelegate
@@ -199,11 +199,11 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
     bool wasNoActivity = NO;
     NSNumber *__nonnull safeTabId = tabId ? tabId : @(0);
     ConnectionTrafficCounterStruct *counter = [[ConnectionTrafficCounterStruct alloc] initWithTabId:safeTabId];
-    @synchronized(_connectionsLock)
-    {
+//    @synchronized(_connectionsLock)
+//    {
         wasNoActivity = ([_connectionsCounters count] == 0);
         [_connectionsCounters setObject:counter forKey:connection];
-    }
+//    }
     if (wasNoActivity) {
         [_globalActivityFilter filterTransitionToState:@(YES)];
     }
@@ -230,12 +230,12 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 - (void)connection:(NSURLConnection *)connection receivedResponseWithExpectedLength:(long long)length
 {
     ConnectionTrafficCounterStruct *counter = nil;
-    @synchronized(_connectionsLock)
-    {
+//    @synchronized(_connectionsLock)
+//    {
         counter = [_connectionsCounters objectForKey:connection];
         counter.expectedLength = length;
         counter = [counter copy];
-    }
+//    }
     [self onActivityOfTabId:counter.tabId];
 
 // -----
@@ -249,11 +249,11 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 
             // If expected length is not unknown, we update expected byte count right here.
             if (length != NSURLResponseUnknownLength) {
-                @synchronized(progress)
-                {
+//                @synchronized(progress)
+//                {
                     [progress incrementExpectedByteCount:length];
                     [delegate onNetworkLoadingProgress:progress.currentProgress];
-                }
+//                }
             }
         }
     }
@@ -282,11 +282,11 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 
             // If expected length was unknown, we are periodically updating expected byte count.
             if (counter.expectedLength == NSURLResponseUnknownLength) {
-                @synchronized(progress)
-                {
+//                @synchronized(progress)
+//                {
                     [progress incrementExpectedByteCount:length];
                     [delegate onNetworkLoadingProgress:progress.currentProgress];
-                }
+//                }
             }
         }
     }
@@ -299,14 +299,14 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
     bool isActivityEnded = NO;
     NSNumber *tabId;
     ConnectionTrafficCounterStruct *counter = nil;
-    @synchronized(_connectionsLock)
-    {
+//    @synchronized(_connectionsLock)
+//    {
         counter = [_connectionsCounters objectForKey:connection];
         tabId = counter.tabId;
         [_connectionsCounters removeObjectForKey:connection];
         isActivityEnded = ([_connectionsCounters count] == 0);
         counter = [counter copy];
-    }
+//    }
     if (isActivityEnded) {
         [_globalActivityFilter filterTransitionToState:@(NO)];
     }
@@ -322,8 +322,8 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 
         if ([progress.topLevelNavigationURL isEqual:[connection.currentRequest mainDocumentURL]]) {
 
-            @synchronized(progress)
-            {
+//            @synchronized(progress)
+//            {
 #ifdef DOWNLOAD_PROGRESS_COUNT_BYTES
                 // We count received bytes here, because we do not want to move progress bar to ahead.
                 if (counter.expectedLength == NSURLResponseUnknownLength) {
@@ -340,7 +340,7 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 #endif
 
                 [delegate onNetworkLoadingProgress:progress.currentProgress];
-            }
+//            }
         }
     }
 }
@@ -382,11 +382,11 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
             objc_setAssociatedObject(sender, ProgressbarInfo, progress, OBJC_ASSOCIATION_RETAIN);
         }
 
-        @synchronized(progress)
-        {
+//        @synchronized(progress)
+//        {
             [progress reset];
             [progress startProgressWithURL:request.mainDocumentURL];
-        }
+//        }
     }
 
     return YES;
@@ -407,11 +407,11 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
         DownloadProgressObserver *progress = nil;
         if ((progress = objc_getAssociatedObject(sender, ProgressbarInfo))) {
             id<NetworkActivityDelegate> delegate = (id<NetworkActivityDelegate>)sender;
-            @synchronized(progress)
-            {
+//            @synchronized(progress)
+//            {
                 [progress reset];
                 [delegate onNetworkLoadingProgress:progress.currentProgress];
-            }
+//            }
         }
     } break;
     default:
@@ -455,24 +455,24 @@ NSString *const kNetworkActivityNotification = @"NetworkActivityNotification";
 {
     id<NetworkActivityDelegate> tabDelegate = nil;
     NetworkActivityFilter *filter = nil;
-    @synchronized(_delegatesLock)
-    {
+//    @synchronized(_delegatesLock)
+//    {
         tabDelegate = [_delegateForTabId objectForKey:tabId];
         filter = [_filterForTabId objectForKey:tabId];
-    }
+//    }
     if (!tabDelegate) {
         return;
     }
     // make copies of all connections counters of the relevant tab id
     NSMutableArray *countersForTabId = [NSMutableArray new];
-    @synchronized(_connectionsLock)
-    {
+//    @synchronized(_connectionsLock)
+//    {
         for (ConnectionTrafficCounterStruct *counter in [_connectionsCounters objectEnumerator]) {
             if ([counter.tabId isEqualToNumber:tabId]) {
                 [countersForTabId addObject:[counter copy]];
             }
         }
-    }
+//    }
 
     if ([tabDelegate respondsToSelector:@selector(onNetworkActivityState:)]) {
         [filter filterTransitionToState:@([countersForTabId count] > 0)];

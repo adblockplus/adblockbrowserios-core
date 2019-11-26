@@ -116,12 +116,12 @@ static NSUInteger _staticSubFrameIdentifier = 1;
 - (NSEnumerator *)threadsafeKittFrames
 {
     NSMutableArray<KittFrame *> *objectEnumeratorCopy = [NSMutableArray new];
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         for (KittFrame *frame in [self.frameContextOwningMap objectEnumerator]) {
             [objectEnumeratorCopy addObject:frame];
         }
-    }
+//    }
     return [objectEnumeratorCopy objectEnumerator];
 }
 
@@ -130,20 +130,20 @@ static NSUInteger _staticSubFrameIdentifier = 1;
 {
     NSAssert([NSThread isMainThread], @"Adding JS context not from main thread");
     KittFrame *kittFrame = nil;
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         kittFrame = [self.frameContextOwningMap objectForKey:webKitFrame];
-    }
-    if (kittFrame) {
-        // This used to be Warning but recycling frames seems to be a normal operation mode for JSCore
-        LogInfo(@"JSC is reusing known wkframe (%@ %@) %@", kittFrame.frameId, kittFrame.parentFrameId, kittFrame.fullURLString);
-        /*
-         This used to be "else" and the following new frame mapping creation was not executed.
-         However, it normally happens that after a frame is reused, ProtocolHandler still
-         receives requests with a referer of the previous frame. So all evolutions of the one frame
-         must be kept. We must trust JSC to clear them up.
-         */
-    }
+//    }
+//    if (kittFrame) {
+//        // This used to be Warning but recycling frames seems to be a normal operation mode for JSCore
+//        LogInfo(@"JSC is reusing known wkframe (%@ %@) %@", kittFrame.frameId, kittFrame.parentFrameId, kittFrame.fullURLString);
+//        /*
+//         This used to be "else" and the following new frame mapping creation was not executed.
+//         However, it normally happens that after a frame is reused, ProtocolHandler still
+//         receives requests with a referer of the previous frame. So all evolutions of the one frame
+//         must be kept. We must trust JSC to clear them up.
+//         */
+//    }
     /*
      webKitFrame may not be a direct child of already known frame. There may be intermediate frames.
      Descend until a known frame is reached or a frame root is hit (webKitFrame is a mainFrame).
@@ -169,10 +169,10 @@ static NSUInteger _staticSubFrameIdentifier = 1;
         }
         NSAssert([parentFrame respondsToSelector:@selector(parentFrame)], @"");
         id<WebKitFrame> parentWebKitFrame = parentFrame;
-        @synchronized(_frameMappingLock)
-        {
+//        @synchronized(_frameMappingLock)
+//        {
             kittFrame = [self.frameContextOwningMap objectForKey:parentWebKitFrame];
-        }
+//        }
         if (kittFrame) {
             // reached a known parent frame
             parentFrameId = kittFrame.frameId;
@@ -195,10 +195,10 @@ static NSUInteger _staticSubFrameIdentifier = 1;
             parentFrameId = [kittFrame.frameId copy];
         }
         NSAssert(kittFrame.parentFrameId && kittFrame.frameId, @"frameId and parentFrameId must be set!");
-        @synchronized(_frameMappingLock)
-        {
+//        @synchronized(_frameMappingLock)
+//        {
             [self.frameContextOwningMap setObject:kittFrame forKey:newFrame];
-        }
+//        }
     }
     kittFrame.context = context;
     kittFrame.provisional = false;
@@ -211,10 +211,10 @@ static NSUInteger _staticSubFrameIdentifier = 1;
 
 - (KittFrame *)kittFrameForWebKitFrame:(id<WebKitFrame>)frame
 {
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         return [self.frameContextOwningMap objectForKey:frame];
-    }
+//    }
 }
 
 - (KittFrame *)kittFrameForReferer:(NSString *)referer
@@ -247,28 +247,34 @@ static NSUInteger _staticSubFrameIdentifier = 1;
     }
     [tempKittFrame assignFrameURL:url];
     NSAssert(tempKittFrame.parentFrameId && tempKittFrame.frameId, @"frameId and parentFrameId must be set!");
-    @synchronized(_frameMappingLock)
-    {
+
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self.frameContextOwningMap setObject:tempKittFrame forKey:tempWKFrame];
         if (doClearProvisionalFrames) {
             [self.provisionalWKFrames removeAllObjects];
         }
         [self.provisionalWKFrames addObject:tempWKFrame];
-    }
+        dispatch_semaphore_signal(sema);
+    });
+
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+
     return tempKittFrame;
 }
 
 - (void)assignAliasForCurrentMainFrame:(NSString *__nullable)alias
 {
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         for (id<WebKitFrame> key in self.frameContextOwningMap.keyEnumerator) {
             KittFrame *frame = [self.frameContextOwningMap objectForKey:key];
             if ([frame.frameId isEqualToNumber:@(0)]) {
                 frame.alias = alias;
             }
         }
-    }
+//    }
 }
 
 - (BridgeSwitchboard *)bridgeSwitchboard
@@ -282,8 +288,8 @@ static NSUInteger _staticSubFrameIdentifier = 1;
 /// @return @[id<WebKitFrame>, KittFrame*]
 - (NSArray *)keyValueTupleForReferer:(NSString *)referer
 {
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         for (id<WebKitFrame> key in self.frameContextOwningMap.keyEnumerator) {
             KittFrame *obj = [self.frameContextOwningMap objectForKey:key];
             if ([referer isEqualToString:obj.fullURLString]) {
@@ -305,28 +311,28 @@ static NSUInteger _staticSubFrameIdentifier = 1;
         }
 
         return nil;
-    }
+//    }
 }
 
 - (void)purgeFrameMaps
 {
     id<WebKitFrame> wkFrame = nil;
     KittFrame *kittFrame = nil;
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         // Just iterate to nudge the weak ref clearing
         for (id<WebKitFrame> key in self.frameContextOwningMap.keyEnumerator) {
             wkFrame = key;
             kittFrame = [self.frameContextOwningMap objectForKey:key];
         }
-    }
+//    }
 }
 
 - (void)purgeProvisionalFrameWithURL:(NSString *)urlString
 {
     id<WebKitFrame> wkFrameToDelete = nil;
-    @synchronized(_frameMappingLock)
-    {
+//    @synchronized(_frameMappingLock)
+//    {
         for (id<WebKitFrame> key in [self.frameContextOwningMap keyEnumerator]) {
             KittFrame *obj = [self.frameContextOwningMap objectForKey:key];
             NSAssert(obj.provisional == [key isKindOfClass:[ProvisionalWebKitFrame class]], @"Provisional flag mismatch");
@@ -341,7 +347,7 @@ static NSUInteger _staticSubFrameIdentifier = 1;
             [self.provisionalWKFrames removeObject:wkFrameToDelete];
             [self.frameContextOwningMap removeObjectForKey:wkFrameToDelete];
         }
-    }
+//    }
 }
 
 #pragma mark - WebViewProtocol
