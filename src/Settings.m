@@ -182,6 +182,11 @@ static NSBundle *_kittCoreBundle;
     return [self isDevModeOn] ? [self devServerURLWithResource:ExtensionServerResource_Listing] : _prodServerURL;
 }
 
++ (NSString *)desktopWebViewUserAgent
+{
+    return @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36";
+}
+
 /// must be lazy init.
 /// When it was directly in constructor, it was invoking JS context creation too early
 + (NSString *)defaultWebViewUserAgent
