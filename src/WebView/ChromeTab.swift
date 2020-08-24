@@ -117,7 +117,27 @@ open class ChromeTab: NSObject {
         if let internalWebView = internalWebView {
             return internalWebView
         } else {
+            var userAgentSetTarget:String
+            if requestDesktopSite {
+                userAgentSetTarget = Settings.desktopWebViewUserAgent()
+            }else{
+                userAgentSetTarget = Settings.defaultWebViewUserAgent()
+            }
+            // useragent can only be set before UIWebKit spawn
+            setUserAgent(userAgentSetTarget)
             let webView = ContentWebView(frame: CGRect.zero)
+            // synchronize webview before page load by asking it for it's current user agent string
+            // I don't know why this is needed, might as well use the value for debug checking
+            let newUserAgent = webView.stringByEvaluatingJavaScript(from: "navigator.userAgent")
+            if let newUserAgent = newUserAgent {
+                if newUserAgent != userAgentSetTarget{
+                    Log.debug("User agent set failed, target user agent is " + userAgentSetTarget + ", current user agent is " + newUserAgent)
+                }else{
+                    Log.info("User agent is set to " + newUserAgent + "successfully")
+                }
+            }else{
+                Log.debug("Failed retriving user agent string after setting new user agent")
+            }
             webView.chromeTab = self
             webView.faviconLoader = window.chrome.createFaviconLoader(webView)
             webView.identifier = identifier
@@ -134,7 +154,21 @@ open class ChromeTab: NSObject {
             return webView
         }
     }
-
+    private var _requestDesktopSite: Bool = false
+    public var requestDesktopSite: Bool{
+        get{
+            return _requestDesktopSite
+        }
+        set{
+            _requestDesktopSite = newValue
+            internalWebView?.removeFromSuperview()
+            internalWebView = nil
+            // trigger webView re-init
+            if let url = URL {
+                webView.loadRequest(URLRequest(url: url as URL))
+            }
+        }
+    }
     internal var internalSessionManager: SessionManager?
 
     @objc open var sessionManager: SessionManager {
@@ -359,4 +393,13 @@ func setIfNotEqual<T>(_ input: inout T, value: Any?, defaultValue: T) where T: E
     } else {
         input = defaultValue
     }
+}
+
+func setUserAgent(_ userAgent:String) {
+    var domain = UserDefaults.standard.volatileDomain(forName:UserDefaults.registrationDomain)
+    domain.removeValue(forKey: "UserAgent")
+    domain["UserAgent"] = userAgent
+    UserDefaults.standard.removeVolatileDomain(forName:UserDefaults.registrationDomain)
+    UserDefaults.standard.setVolatileDomain(domain, forName:UserDefaults.registrationDomain)
+    while !UserDefaults.standard.synchronize(){}
 }
